@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState, createContext, useContext, useCallback } from 'react'
-import { X, Loader2, CheckCircle2, AlertTriangle, XCircle, Clock, FileText, Ban, RefreshCw } from 'lucide-react'
+import { X, Loader2, CheckCircle2, AlertTriangle, XCircle, Clock, FileText, Ban, RefreshCw, MoreHorizontal } from 'lucide-react'
 import type { Account, PostStatus } from '@shared/types'
 import { cx, initials } from './util'
 
@@ -234,6 +234,96 @@ export function PageHeader({ title, kicker, subtitle, actions }: { title: ReactN
       </div>
       {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
     </div>
+  )
+}
+
+// ---------- menu de ações (⋯) ----------
+export interface MenuItem {
+  label: string
+  icon?: ReactNode
+  onClick: () => void
+  danger?: boolean
+  hidden?: boolean
+}
+
+export function ActionMenu({ items, label = 'Mais ações' }: { items: MenuItem[]; label?: string }) {
+  const [open, setOpen] = useState(false)
+  const [up, setUp] = useState(false)
+  useEffect(() => {
+    if (!open) return
+    const close = () => setOpen(false)
+    window.addEventListener('click', close)
+    window.addEventListener('keydown', close)
+    return () => {
+      window.removeEventListener('click', close)
+      window.removeEventListener('keydown', close)
+    }
+  }, [open])
+  const visibleItems = items.filter((i) => !i.hidden)
+  if (!visibleItems.length) return null
+  return (
+    <div className="relative">
+      <button
+        aria-label={label}
+        title={label}
+        onClick={(e) => {
+          e.stopPropagation()
+          // perto do rodapé, abre para cima
+          setUp(e.clientY > window.innerHeight - 60 - items.filter((i) => !i.hidden).length * 38)
+          setOpen(!open)
+        }}
+        className={cx('flex h-7 w-7 items-center justify-center rounded-lg text-sub hover:bg-s2 hover:text-white', open && 'bg-s2 text-white')}
+      >
+        <MoreHorizontal size={16} />
+      </button>
+      {open && (
+        <div className={cx('absolute right-0 z-40 min-w-[200px] whitespace-nowrap rounded-lg bg-s2 p-1 shadow-pop', up ? 'bottom-8' : 'top-8')}>
+          {visibleItems.map((i) => (
+            <button
+              key={i.label}
+              onClick={() => {
+                setOpen(false)
+                i.onClick()
+              }}
+              className={cx('flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-base', i.danger ? 'text-bad hover:bg-bad/10' : 'text-ink hover:bg-s3')}
+            >
+              <span className="text-sub">{i.icon}</span>
+              {i.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ---------- confirmação dentro do app (no lugar do confirm() do Windows) ----------
+type ConfirmOpts = { title: string; text?: string; confirmLabel?: string; danger?: boolean }
+const ConfirmCtx = createContext<(o: ConfirmOpts) => Promise<boolean>>(async () => false)
+export const useConfirm = () => useContext(ConfirmCtx)
+
+export function ConfirmProvider({ children }: { children: ReactNode }) {
+  const [req, setReq] = useState<(ConfirmOpts & { resolve: (v: boolean) => void }) | null>(null)
+  const ask = useCallback((o: ConfirmOpts) => new Promise<boolean>((resolve) => setReq({ ...o, resolve })), [])
+  const done = (v: boolean) => {
+    req?.resolve(v)
+    setReq(null)
+  }
+  return (
+    <ConfirmCtx.Provider value={ask}>
+      {children}
+      <Modal open={!!req} onClose={() => done(false)} title={req?.title ?? ''} width={440}>
+        {req?.text && <p className="text-md text-sub">{req.text}</p>}
+        <div className="mt-5 flex justify-end gap-2">
+          <Button kind="ghost" onClick={() => done(false)}>
+            Voltar
+          </Button>
+          <Button kind={req?.danger ? 'danger' : 'primary'} onClick={() => done(true)} autoFocus>
+            {req?.confirmLabel ?? 'Confirmar'}
+          </Button>
+        </div>
+      </Modal>
+    </ConfirmCtx.Provider>
   )
 }
 

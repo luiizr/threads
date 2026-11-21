@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
-import { PlusCircle, RefreshCw, Search, LineChart, CloudOff, Pause, Play, Info, ShieldCheck, Users } from 'lucide-react'
+import { PlusCircle, RefreshCw, Search, LineChart, CloudOff, Pause, Play, Info, ShieldCheck, Users, LayoutGrid, List } from 'lucide-react'
 import type { Account, AppState } from '@shared/types'
 import { api } from '../api'
-import { AccountBadge, Avatar, Button, Empty, Modal, PageHeader, Toggle, useRun } from '../ui'
+import { AccountBadge, Avatar, Button, Empty, Modal, PageHeader, Segmented, Toggle, useRun } from '../ui'
 import { ago, cx, dayKey, fmtShort, fmtWhen } from '../util'
 import type { Nav } from '../App'
 
@@ -13,6 +13,7 @@ export default function Accounts({ state, nav }: { state: AppState; nav: Nav }) 
   const [q, setQ] = useState('')
   const [manage, setManage] = useState<Account | null>(null)
   const [checkingAll, setCheckingAll] = useState(false)
+  const [view, setView] = useState<'cards' | 'list'>(state.accounts.length > 4 ? 'list' : 'cards')
   const run = useRun()
   const { accounts, posts, runtime } = state
 
@@ -101,11 +102,56 @@ export default function Accounts({ state, nav }: { state: AppState; nav: Nav }) 
           <Search size={15} className="absolute left-3 top-2.5 text-mute" />
           <input className="input pl-9" placeholder="Filtrar por nome ou @handle…" value={q} onChange={(e) => setQ(e.target.value)} />
         </div>
+        <Segmented
+          value={view}
+          onChange={setView}
+          options={[
+            { value: 'cards', label: <LayoutGrid size={15} aria-label="Cartões" /> },
+            { value: 'list', label: <List size={15} aria-label="Lista" /> }
+          ]}
+        />
       </div>
 
       {!accounts.length ? (
         <div className="card">
           <Empty icon={<Users size={22} />} title="Nenhuma conta conectada" text="Conecte a primeira conta do Threads para começar a agendar." action={<Button kind="primary" onClick={connect}>Conectar conta</Button>} />
+        </div>
+      ) : view === 'list' ? (
+        <div className="card divide-y divide-s2">
+          {list.map((a) => {
+            const st = perAccount.get(a.id)!
+            return (
+              <div key={a.id} className="grid grid-cols-[minmax(220px,1fr)_110px_150px_80px_140px_220px] items-center gap-4 px-4 py-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <Avatar account={a} size={36} />
+                  <div className="min-w-0">
+                    <div className="truncate font-semibold">{a.name}</div>
+                    <div className="truncate text-sub">@{a.handle}</div>
+                  </div>
+                </div>
+                <div className="mono text-sub">{fmtShort(a.followers)} seg.</div>
+                <div>
+                  <AccountBadge account={a} />
+                </div>
+                <div className="mono text-sub" title="Na fila">{st.pending} na fila</div>
+                <div className="mono text-sub" title="Próxima publicação">{st.next ? fmtWhen(st.next) : '—'}</div>
+                <div className="flex justify-end gap-1">
+                  {a.status === 'expired' ? (
+                    <Button kind="danger" size="sm" icon={<RefreshCw size={13} />} loading={runtime.connecting} onClick={() => run(async () => { const r = await api.reconnectAccount(a.id); if (!r.ok) throw new Error(r.error) }, 'Conta reconectada!')}>
+                      Reconectar
+                    </Button>
+                  ) : (
+                    <Button kind="ghost" size="sm" icon={a.paused ? <Play size={13} /> : <Pause size={13} />} onClick={() => run(() => api.updateAccount(a.id, { paused: !a.paused }))}>
+                      {a.paused ? 'Retomar' : 'Pausar'}
+                    </Button>
+                  )}
+                  <Button size="sm" onClick={() => setManage(a)}>
+                    Gerenciar
+                  </Button>
+                </div>
+              </div>
+            )
+          })}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">

@@ -10,7 +10,7 @@ module.exports = {
         s3: '#334155',
         ink: '#F8FAFC',
         sub: '#94A3B8',
-        mute: '#64748B',
+        mute: '#7D8BA1',
         violet: { DEFAULT: '#8B5CF6', deep: '#7C3AED', soft: '#d0bcff', dark: '#6D28D9' },
         ok: '#10B981',
         warn: '#F59E0B',
@@ -22,7 +22,7 @@ module.exports = {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
       },
       fontSize: {
-        'xs2': ['10px', '14px'],
+        'xs2': ['10.5px', '14px'],
         'xs': ['11px', '16px'],
         'sm': ['12px', '16px'],
         'base': ['13px', '18px'],

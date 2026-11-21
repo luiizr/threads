@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ImagePlus, X, Film, Send, CalendarClock, Save, Heart, MessageCircle, Repeat2, Share, AlertTriangle, Check, Zap } from 'lucide-react'
 import type { AppState, PickedFile } from '@shared/types'
 import { MAX_CHARS, MAX_MEDIA } from '@shared/types'
 import { api } from '../api'
 import { Avatar, Button, Empty, PageHeader, Segmented, useRun, useToast } from '../ui'
-import { cx, fmtSize, mediaUrl, toLocalInput } from '../util'
+import { cx, fmtSize, fmtWhen, mediaUrl, toLocalInput } from '../util'
 import type { Nav } from '../App'
 
 function defaultTime(): number {
@@ -95,6 +95,23 @@ export default function Compose({ state, nav }: { state: AppState; nav: Nav }) {
     []
   )
 
+
+  // Ctrl+Enter publica/agenda de qualquer lugar da tela
+  const submitRef = useRef(submit)
+  submitRef.current = submit
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault()
+        if (canSubmitRef.current) submitRef.current(false)
+      }
+    }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [])
+  const canSubmitRef = useRef(canSubmit)
+  canSubmitRef.current = canSubmit
+
   if (!state.accounts.length) {
     return (
       <div className="card">
@@ -104,19 +121,25 @@ export default function Compose({ state, nav }: { state: AppState; nav: Nav }) {
   }
 
   const first = selected[0]
+  const summary =
+    accountIds.length === 0
+      ? 'Escolha pelo menos uma conta'
+      : `${accountIds.length === 1 ? `@${first?.handle}` : `${accountIds.length} contas`} · ${mode === 'now' ? 'agora' : fmtWhen(when)}${media.length ? ` · ${media.length} mídia(s)` : ''}`
 
   return (
-    <div>
+    <div className="-mb-6 flex min-h-full flex-col">
       <PageHeader
         title={editing ? `Editar ${editing.code}` : 'Nova publicação'}
-        subtitle={editing ? 'Altere o texto, as mídias ou o horário.' : 'Escreva uma vez e escolha as contas. Contas marcadas para o mesmo horário publicam juntas, em paralelo.'}
+        subtitle={editing ? 'Altere o texto, as mídias ou o horário.' : 'Escreva uma vez e escolha as contas. Contas no mesmo horário publicam juntas.'}
       />
-      <div className="grid grid-cols-[1fr_380px] gap-5">
+      <div className="grid flex-1 grid-cols-[1fr_360px] gap-5 pb-24">
         <div className="space-y-4">
           {/* contas */}
           <section className="card p-4">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-semibold">{editing ? 'Conta' : 'Publicar em'}</h2>
+              <h2 className="font-semibold">
+                {editing ? 'Conta' : 'Publicar em'} {!editing && <span className="mono text-sub">{accountIds.length}/{state.accounts.length}</span>}
+              </h2>
               {!editing && state.accounts.length > 1 && (
                 <button className="text-sm text-violet-soft hover:underline" onClick={() => setAccountIds(accountIds.length === state.accounts.length ? [] : state.accounts.map((a) => a.id))}>
                   {accountIds.length === state.accounts.length ? 'Limpar seleção' : 'Selecionar todas'}
@@ -130,7 +153,8 @@ export default function Compose({ state, nav }: { state: AppState; nav: Nav }) {
                   <button
                     key={a.id}
                     onClick={() => toggle(a.id)}
-                    className={cx('flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 transition', on ? 'border-violet bg-violet/15' : 'border-s3 bg-s2 hover:border-sub')}
+                    aria-pressed={on}
+                    className={cx('flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 transition', on ? 'border-violet bg-violet/15' : 'border-s3 bg-s2 opacity-80 hover:border-sub hover:opacity-100')}
                   >
                     <Avatar account={a} size={26} />
                     <span className="font-medium">@{a.handle}</span>
@@ -147,113 +171,84 @@ export default function Compose({ state, nav }: { state: AppState; nav: Nav }) {
             )}
           </section>
 
-          {/* texto */}
+          {/* texto + mídias no mesmo bloco, como no Threads */}
           <section className="card p-4">
-            <h2 className="mb-3 font-semibold">Texto</h2>
             <textarea
-              className="input min-h-[180px] resize-y text-md leading-relaxed"
+              className="input min-h-[150px] resize-y border-transparent bg-transparent px-0 text-md leading-relaxed focus:border-transparent focus:shadow-none"
               placeholder="O que há de novo?"
               value={text}
               onChange={(e) => setText(e.target.value)}
               autoFocus
             />
-            <div className="mt-2 flex justify-between">
-              <span className="text-sm text-sub">Quebras de linha, emojis e #tópico funcionam como no Threads.</span>
-              <span className={cx('mono', over ? 'text-bad' : text.length > MAX_CHARS * 0.9 ? 'text-warn' : 'text-sub')}>
-                {text.length}/{MAX_CHARS}
-              </span>
-            </div>
-          </section>
-
-          {/* mídia */}
-          <section className="card p-4">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-semibold">
-                Mídias <span className="mono text-sub">{media.length}/{MAX_MEDIA}</span>
-              </h2>
-              <Button size="sm" icon={<ImagePlus size={14} />} onClick={addMedia} disabled={media.length >= MAX_MEDIA}>
-                Adicionar imagens ou vídeos
-              </Button>
-            </div>
-            {media.length ? (
-              <div className="grid grid-cols-5 gap-2">
+            {media.length > 0 && (
+              <div className="mb-3 mt-1 flex gap-2 overflow-x-auto pb-1">
                 {media.map((m, i) => (
-                  <div key={m.path} className="group relative aspect-square overflow-hidden rounded-lg border border-s3 bg-canvas">
-                    {m.type === 'image' ? (
-                      <img src={mediaUrl(m.path)} className="h-full w-full object-cover" />
-                    ) : (
-                      <video src={mediaUrl(m.path)} className="h-full w-full object-cover" muted />
-                    )}
+                  <div key={m.path} className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-s3 bg-canvas">
+                    {m.type === 'image' ? <img src={mediaUrl(m.path)} className="h-full w-full object-cover" /> : <video src={mediaUrl(m.path)} className="h-full w-full object-cover" muted />}
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 px-1.5 py-1 text-xs2">
-                      <div className="truncate">{m.name}</div>
                       <div className="mono text-sub">
                         {m.type === 'video' && <Film size={10} className="mr-1 inline" />}
                         {fmtSize(m.size)}
                       </div>
                     </div>
-                    <button className="absolute right-1 top-1 hidden rounded-full bg-black/70 p-1 group-hover:block" onClick={() => setMedia(media.filter((_, j) => j !== i))}>
+                    <button
+                      aria-label={`Remover ${m.name}`}
+                      className="absolute right-1 top-1 rounded-full bg-black/70 p-1 opacity-0 transition group-hover:opacity-100 focus:opacity-100"
+                      onClick={() => setMedia(media.filter((_, j) => j !== i))}
+                    >
                       <X size={12} />
                     </button>
                     <span className="mono absolute left-1 top-1 rounded bg-black/60 px-1">{i + 1}</span>
                   </div>
                 ))}
               </div>
-            ) : (
-              <button onClick={addMedia} className="flex w-full flex-col items-center gap-1 rounded-lg border border-dashed border-s3 py-6 text-sub hover:border-violet hover:text-white">
-                <ImagePlus size={20} />
-                <span>JPG, PNG, WEBP, GIF, MP4 ou MOV. Várias imagens viram carrossel.</span>
-              </button>
             )}
+            <div className="flex items-center justify-between border-t border-s2 pt-3">
+              <Button size="sm" kind="ghost" icon={<ImagePlus size={15} />} onClick={addMedia} disabled={media.length >= MAX_MEDIA}>
+                {media.length ? `Mídias ${media.length}/${MAX_MEDIA}` : 'Adicionar imagens ou vídeos'}
+              </Button>
+              <span className={cx('mono', over ? 'text-bad' : text.length > MAX_CHARS * 0.9 ? 'text-warn' : 'text-sub')}>
+                {text.length}/{MAX_CHARS}
+              </span>
+            </div>
           </section>
+          <p className="px-1 text-sm text-sub">Quebras de linha, emojis e #tópico funcionam como no Threads. Várias imagens viram carrossel (JPG, PNG, WEBP, GIF, MP4, MOV).</p>
+        </div>
 
-          {/* horário */}
+        {/* horário + prévia */}
+        <aside className="space-y-4">
           <section className="card p-4">
             <h2 className="mb-3 font-semibold">Quando publicar</h2>
-            <div className="flex flex-wrap items-center gap-3">
-              <Segmented
-                value={mode}
-                onChange={setMode}
-                options={[
-                  { value: 'later', label: 'Agendar' },
-                  { value: 'now', label: 'Publicar agora' }
-                ]}
-              />
-              {mode === 'later' && (
-                <>
-                  <input type="datetime-local" className="input w-56" value={toLocalInput(when)} onChange={(e) => e.target.value && setWhen(new Date(e.target.value).getTime())} />
+            <Segmented
+              value={mode}
+              onChange={setMode}
+              options={[
+                { value: 'later', label: 'Agendar' },
+                { value: 'now', label: 'Publicar agora' }
+              ]}
+            />
+            {mode === 'later' && (
+              <>
+                <input type="datetime-local" className="input mt-3" value={toLocalInput(when)} onChange={(e) => e.target.value && setWhen(new Date(e.target.value).getTime())} />
+                <div className="mt-2 flex flex-wrap gap-1.5">
                   {quick.map((q) => (
                     <button key={q.l} className="rounded-full border border-s3 px-2.5 py-1 text-sm text-sub hover:border-violet hover:text-white" onClick={() => setWhen(q.v())}>
                       {q.l}
                     </button>
                   ))}
-                </>
-              )}
-            </div>
-            {past && <div className="mt-2 text-sm text-bad">Esse horário já passou. Escolha um horário futuro ou "Publicar agora".</div>}
+                </div>
+              </>
+            )}
+            {past && <div className="mt-2 text-sm text-bad">Esse horário já passou. Escolha outro ou "Publicar agora".</div>}
             {accountIds.length > 1 && (
-              <div className="mt-3 flex items-center gap-2 text-sm text-sub">
-                <Zap size={13} className="text-violet-soft" />
-                As {accountIds.length} contas publicam no mesmo horário, em paralelo (até {state.runtime.concurrency} ao mesmo tempo neste PC; ajuste em Configurações).
+              <div className="mt-3 flex items-start gap-2 text-sm text-sub">
+                <Zap size={13} className="mt-0.5 shrink-0 text-violet-soft" />
+                As {accountIds.length} contas publicam juntas, em paralelo.
               </div>
             )}
           </section>
 
-          <div className="flex justify-end gap-2 pb-6">
-            <Button kind="ghost" onClick={() => nav.go('posts')}>
-              Cancelar
-            </Button>
-            <Button icon={<Save size={15} />} disabled={busy || empty || !accountIds.length || over} onClick={() => submit(true)}>
-              Salvar rascunho
-            </Button>
-            <Button kind="primary" size="lg" icon={mode === 'now' ? <Send size={16} /> : <CalendarClock size={16} />} disabled={!canSubmit} loading={busy} onClick={() => submit(false)}>
-              {mode === 'now' ? 'Publicar agora' : editing ? 'Salvar agendamento' : `Agendar${accountIds.length > 1 ? ` em ${accountIds.length} contas` : ''}`}
-            </Button>
-          </div>
-        </div>
-
-        {/* prévia */}
-        <aside>
-          <div className="sticky top-0">
+          <div>
             <div className="kicker mb-2">Prévia</div>
             <div className="card2 p-4">
               <div className="flex gap-3">
@@ -261,13 +256,13 @@ export default function Compose({ state, nav }: { state: AppState; nav: Nav }) {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold">{first?.handle ?? 'conta'}</span>
-                    <span className="text-sub">{mode === 'now' ? 'agora' : new Date(when).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</span>
+                    <span className="text-sub">{mode === 'now' ? 'agora' : fmtWhen(when)}</span>
                   </div>
                   <div className="mt-1 whitespace-pre-wrap break-words text-md">{text || <span className="text-mute">Seu texto aparece aqui…</span>}</div>
                   {media.length > 0 && (
                     <div className="mt-3 flex gap-1.5 overflow-x-auto">
                       {media.map((m) => (
-                        <div key={m.path} className={cx('shrink-0 overflow-hidden rounded-lg border border-s3', media.length === 1 ? 'w-full' : 'h-40 w-32')}>
+                        <div key={m.path} className={cx('shrink-0 overflow-hidden rounded-lg border border-s3', media.length === 1 ? 'w-full' : 'h-36 w-28')}>
                           {m.type === 'image' ? <img src={mediaUrl(m.path)} className="h-full w-full object-cover" /> : <video src={mediaUrl(m.path)} className="h-full w-full object-cover" muted />}
                         </div>
                       ))}
@@ -285,6 +280,25 @@ export default function Compose({ state, nav }: { state: AppState; nav: Nav }) {
             {selected.length > 1 && <div className="mt-2 text-center text-sm text-sub">e mais {selected.length - 1} conta(s)</div>}
           </div>
         </aside>
+      </div>
+
+      {/* barra de ações sempre visível */}
+      <div className="sticky bottom-0 -mx-7 mt-auto flex items-center gap-3 border-t border-s2 bg-[#0E1320]/95 px-7 py-3 backdrop-blur">
+        <div className="min-w-0 flex-1">
+          <div className={cx('truncate font-medium', !accountIds.length && 'text-warn')}>{summary}</div>
+          <div className="text-sm text-sub">
+            {empty ? 'Escreva um texto ou adicione uma mídia' : over ? `Passou de ${MAX_CHARS} caracteres` : past ? 'Horário no passado' : 'Ctrl + Enter para confirmar'}
+          </div>
+        </div>
+        <Button kind="ghost" onClick={() => nav.go('posts')}>
+          Cancelar
+        </Button>
+        <Button icon={<Save size={15} />} disabled={busy || empty || !accountIds.length || over} onClick={() => submit(true)}>
+          Salvar rascunho
+        </Button>
+        <Button kind="primary" size="lg" icon={mode === 'now' ? <Send size={16} /> : <CalendarClock size={16} />} disabled={!canSubmit} loading={busy} onClick={() => submit(false)}>
+          {mode === 'now' ? 'Publicar agora' : editing ? 'Salvar agendamento' : 'Agendar'}
+        </Button>
       </div>
     </div>
   )

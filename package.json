@@ -1,7 +1,7 @@
 {
   "name": "threadflow",
   "productName": "ThreadFlow",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "ThreadFlow - agendador local para varias contas do Threads",
   "main": "./out/main/index.js",
   "author": "ThreadFlow",

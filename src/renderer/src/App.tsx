@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BarChart3, Users, CalendarPlus, Layers, Terminal, Settings as Cog, Plus, Infinity as Loop, AlertTriangle } from 'lucide-react'
 import { useAppState, api } from './api'
 import { Avatar, Button, Dot } from './ui'
-import { cx, initials, ago } from './util'
+import { cx, initials, fmtTime, relDay } from './util'
 import Metrics from './pages/Metrics'
 import Accounts from './pages/Accounts'
 import Compose from './pages/Compose'
@@ -48,6 +48,26 @@ export default function App() {
 
   useEffect(() => window.tf.on('navigate', (p: string) => nav.go(p as Page)), [])
 
+  // atalhos: Ctrl+N nova publicação, Ctrl+1..6 navega entre as telas
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (!e.ctrlKey || e.altKey) return
+      if (e.key.toLowerCase() === 'n') {
+        e.preventDefault()
+        setOpts({})
+        setPage('compose')
+      }
+      const i = Number(e.key) - 1
+      if (i >= 0 && i < NAV.length) {
+        e.preventDefault()
+        setOpts({})
+        setPage(NAV[i].id)
+      }
+    }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [])
+
   if (!state) return <div className="flex h-full items-center justify-center text-sub">Carregando…</div>
   if (!state.settings.onboarded) return <Welcome state={state} />
 
@@ -55,6 +75,9 @@ export default function App() {
   const scheduled = posts.filter((p) => p.status === 'scheduled').length
   const publishing = posts.filter((p) => p.status === 'publishing').length
   const expired = accounts.filter((a) => a.status === 'expired').length
+  const nextPost = posts
+    .filter((p) => p.status === 'scheduled' && p.scheduledAt)
+    .sort((a, b) => a.scheduledAt! - b.scheduledAt!)[0]
 
   return (
     <div className="flex h-full flex-col">
@@ -94,7 +117,7 @@ export default function App() {
         </div>
         <div className="flex-1" />
         <div className="no-drag">
-          <Button kind="primary" size="sm" icon={<Plus size={14} />} onClick={() => nav.go('compose')}>
+          <Button kind="primary" size="sm" icon={<Plus size={14} />} onClick={() => nav.go('compose')} title="Nova publicação (Ctrl+N)">
             Nova publicação
           </Button>
         </div>
@@ -110,6 +133,7 @@ export default function App() {
               return (
                 <button
                   key={n.id}
+                  title={`${n.label} (Ctrl+${NAV.indexOf(n) + 1})`}
                   onClick={() => nav.go(n.id)}
                   className={cx(
                     'flex items-center gap-3 rounded-lg px-3 py-2.5 text-md transition',
@@ -125,11 +149,18 @@ export default function App() {
             })}
           </nav>
           <div className="flex-1" />
-          <div className="mb-2 rounded-lg border border-s2 bg-s1 px-3 py-2">
-            <div className="kicker">Última checagem</div>
-            <div className="mono mt-0.5 text-sub">Contas: {ago(runtime.lastCheckAt)}</div>
-            <div className="mono text-sub">Métricas: {ago(runtime.lastMetricsAt)}</div>
-          </div>
+          {nextPost ? (
+            <button onClick={() => nav.go('posts', { filter: 'scheduled' })} className="mb-2 rounded-lg border border-s2 bg-s1 px-3 py-2.5 text-left hover:border-s3">
+              <div className="kicker">Próxima publicação</div>
+              <div className="mt-1 flex items-center gap-2">
+                <Avatar account={accounts.find((a) => a.id === nextPost.accountId)} size={18} ring={false} />
+                <span className="truncate font-medium">{relDay(nextPost.scheduledAt!)}, {fmtTime(nextPost.scheduledAt!)}</span>
+              </div>
+              <div className="mt-0.5 truncate text-sm text-sub">{nextPost.text || '(só mídia)'}</div>
+            </button>
+          ) : (
+            <div className="mb-2 rounded-lg border border-dashed border-s2 px-3 py-2.5 text-sm text-sub">Nada agendado</div>
+          )}
           <button onClick={() => nav.go('settings')} className="flex items-center gap-3 rounded-lg border border-s2 bg-s1 p-2.5 text-left hover:border-s3">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet to-violet-dark text-sm font-bold">
               {initials(settings.userName)}

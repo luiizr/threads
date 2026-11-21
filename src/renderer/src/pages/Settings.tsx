@@ -91,7 +91,7 @@ export default function SettingsPage({ state }: { state: AppState }) {
             <Toggle checked={s.preventSleep} onChange={(v) => set({ preventSleep: v })} />
           </Row>
           <Row title="Horários perdidos" desc="O que fazer com publicações cujo horário passou enquanto o computador estava desligado.">
-            <select className="input w-56" value={s.missedPolicy} onChange={(e) => set({ missedPolicy: e.target.value as Settings['missedPolicy'] })}>
+            <select className="input w-72" value={s.missedPolicy} onChange={(e) => set({ missedPolicy: e.target.value as Settings['missedPolicy'] })}>
               <option value="publish">Publicar assim que abrir</option>
               <option value="skip">Não publicar (marcar como falha)</option>
             </select>

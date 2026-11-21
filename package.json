@@ -11,7 +11,8 @@
     "build": "electron-vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "icon": "node scripts/make-icon.mjs",
-    "dist": "npm run icon && electron-vite build && electron-builder --win nsis --x64"
+    "dist": "npm run icon && electron-vite build && electron-builder --win nsis --x64",
+    "release": "node scripts/publish-release.mjs"
   },
   "dependencies": {
     "playwright-core": "1.65.1"

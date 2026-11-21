@@ -35,7 +35,10 @@ npm install
 npm run dev        # abre o app em modo desenvolvimento
 npm run typecheck
 npm run dist       # gera dist\ThreadFlow-Setup-<versão>.exe
+npm run release    # substitui o instalador no release único do GitHub
 ```
+
+Download sempre da versão mais nova: https://github.com/luiizr/threads/releases/latest/download/ThreadFlow-Setup.exe
 
 O NSIS não aceita caminhos muito longos (acima de ~260 caracteres). Se a pasta do projeto tiver um caminho grande, empacote a partir de uma letra de unidade curta (compile antes, no caminho normal):
 

@@ -8,6 +8,8 @@ Envie somente o instalador `ThreadFlow Setup`. Abra-o no Windows x64 para instal
 
 Em **Contas**, clique em **Conectar conta**, faça login no Threads na janela do navegador e clique em **Salvar e verificar sessão**. O app aproveita Edge ou Chrome quando disponíveis e baixa o Chromium quando necessário. Em **Publicações**, selecione os perfis e marque a data e a hora. O computador precisa estar ligado, conectado e com o ThreadFlow ativo no horário da postagem. Fechar a janela oculta o app na bandeja. O item **Sair do ThreadFlow** da bandeja encerra o processamento.
 
+Na fila, **Publicando** mostra a etapa atual e há quantos segundos ela começou. Quando o Threads não confirma o envio, a fila pede conferência na rede para evitar duplicatas. Uma falha explícita na abertura do editor indica que o envio ainda não foi tentado.
+
 ## Rodar a partir dos arquivos do GitHub
 
 1. No GitHub, abra **Code → Download ZIP** e extraia o ZIP em uma pasta própria. Entre na pasta extraída que contém `package.json`.

@@ -73,25 +73,33 @@ export async function identify(page,{details=false}={}){
   }
   throw new SessionError('Não foi possível confirmar o perfil. Confira se a conta está conectada ao Threads.');
 }
-export async function publish(browser,account,job,media,beforeSend){
+export async function openComposer(page){
+  const create=/^(create(?: a post| post| thread)?|criar(?: uma publicação| publicação| thread)?|new (?:thread|post)|nov[ao] (?:thread|post|publicação)|start a thread|iniciar (?:um|uma) thread)[.!…]?$/i;
+  const opener=page.getByRole('button',{name:create}).or(page.getByRole('link',{name:create})).filter({visible:true});
+  const dialog=page.getByRole('dialog');
+  const editor=dialog.locator('[contenteditable="true"]').filter({visible:true});
+  await opener.or(editor).first().waitFor({state:'visible',timeout:waitMs});
+  if(!await editor.isVisible())await opener.first().click({timeout:waitMs});
+  await editor.waitFor({state:'visible',timeout:waitMs});
+  return {dialog,editor};
+}
+export async function publish(browser,account,job,media,beforeSend,onStage=()=>{}){
   const ctx=await browser.newContext({storageState:account.state});
   ctx.setDefaultTimeout(waitMs);
   let stage='carregar o Threads';
   try {
+    await onStage('Carregando o Threads');
     const page=await ctx.newPage();
     await openHome(page);
+    await onStage('Verificando a conta');
     if((await identify(page)).handle.toLowerCase()!==account.handle.toLowerCase())throw new SessionError('O Threads abriu em outra conta.');
     stage='abrir o editor de publicação';
-    const create=/^(create(?: a post| post| thread)?|criar(?: uma publicação| publicação| thread)?|new (?:thread|post)|nov[ao] (?:thread|publicação)|start a thread|iniciar (?:um|uma) thread)[.!…]?$/i;
-    const opener=page.getByRole('button',{name:create}).or(page.getByRole('link',{name:create})).filter({visible:true});
-    const dialog=page.getByRole('dialog');
-    const editor=dialog.locator('[contenteditable="true"]').filter({visible:true});
-    await opener.or(editor).first().waitFor({state:'visible'});
-    if(!await editor.isVisible())await opener.first().click();
-    await editor.waitFor({state:'visible'});
+    await onStage('Abrindo o editor');
+    const {dialog,editor}=await openComposer(page);
     if(job.text)await editor.fill(job.text);
     if(media){
       stage='carregar a mídia';
+      await onStage('Carregando a mídia');
       const input=dialog.locator('input[type="file"]').first();
       if(await input.count())await input.setInputFiles(media);
       else{
@@ -103,11 +111,13 @@ export async function publish(browser,account,job,media,beforeSend){
     }
     const submit=dialog.getByRole('button',{name:/^(post|postar|publicar)$/i});
     stage='habilitar o botão Publicar';
+    await onStage('Preparando o envio');
     await submit.click({trial:true});
+    await onStage('Aguardando confirmação do Threads');
     await beforeSend();
     stage='confirmar a publicação no Threads';
     await submit.click();
-    await page.getByText(/^(posted|thread posted|publicado|thread publicado)[.!]?$/i).filter({visible:true}).first().waitFor();
+    await page.getByText(/^(posted|thread posted|your thread was posted|publicado|thread publicado|seu thread foi publicado)[.!]?$/i).filter({visible:true}).first().waitFor();
     return {status:'publicado',confirmedAt:Date.now()};
   }catch(error){
     if(error.name==='TimeoutError')throw Error('O Threads levou mais de 2 minutos para '+stage+'.');

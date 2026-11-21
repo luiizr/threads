@@ -91,7 +91,7 @@ function prepare(){
   while(staticText.nextNode()){
     const node=staticText.currentNode;
     if(node.parentElement?.closest('style,script'))continue;
-    node.textContent=node.textContent.replaceAll('Luiz Silva','Perfil local').replaceAll('v1.4','v0.1.4')
+    node.textContent=node.textContent.replaceAll('Luiz Silva','Perfil local').replaceAll('v1.4','v0.1.5')
       .replaceAll('Banco SQLite local seguro.','').replaceAll('Armazenado no SQLite local','Armazenado neste computador');
   }
   for(const control of main.querySelectorAll('button,input,select,textarea'))control.disabled=true;
@@ -215,6 +215,10 @@ function pill(text,value){const node=element('span',text,'tf-pill');node.dataset
 function postRow(job,actions=false){
   const row=element('article',undefined,'tf-post');
   row.append(element('strong',job.handle),element('time',time(job.at)),element('p',job.text||job.media||'Publicação com mídia'),pill(statuses[job.status]||job.status,job.status));
+  if(job.status==='publicando'&&job.stage?.name){
+    const seconds=Math.max(0,Math.floor((Date.now()-job.stage.at)/1000));
+    row.append(element('small',job.stage.name+' · '+seconds+' s'));
+  }
   if(job.reason)row.append(element('small',job.reason,'tf-reason'));
   if(actions&&job.status==='agendado')row.append(button('Cancelar agendamento',()=>action(async()=>{if(confirm('Cancelar esta publicação?'))await api.invoke('cancel-post',job.id);await refresh();})));
   return row;

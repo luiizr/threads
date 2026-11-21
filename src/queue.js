@@ -33,10 +33,12 @@ export async function connectQueue({url,prefix,accounts,mediaPath,browser,publis
     active.add(account.id);
     let sent=false;
     try{
+      const stage=async name=>job.updateProgress({name,at:Date.now()});
+      await stage('Iniciando o navegador');
       return await publish(await browser(),account,data,data.media && mediaPath(data.media),async()=>{
         await job.updateData({...data,sent:true});
         sent=true;
-      });
+      },stage);
     }catch(error){
       if(sent)return {status:'verificar',reason:'O Threads não confirmou o envio. Confira o perfil antes de repetir.'};
       if(error instanceof SessionError){
@@ -46,7 +48,7 @@ export async function connectQueue({url,prefix,accounts,mediaPath,browser,publis
       throw Error(String(error.message).split('\n')[0]);
     }finally{active.delete(account.id);}
   },{connection:workerConnection,prefix,concurrency,maxStalledCount:1});
-  for(const event of ['active','completed','failed','error','stalled'])worker.on(event,changed);
+  for(const event of ['active','completed','failed','error','stalled','progress'])worker.on(event,changed);
   async function list(){
     const types=['delayed','waiting','active','completed','failed'];
     const jobLists=await Promise.all(types.map(type=>queue.getJobs([type],0,['completed','failed'].includes(type)?199:-1,type==='delayed')));
@@ -55,7 +57,8 @@ export async function connectQueue({url,prefix,accounts,mediaPath,browser,publis
       const {text,at,handle,accountId,media,sent}=job.data;
       const status=job.returnvalue?.status||(types[i]==='failed'&&sent?'verificar':labels[types[i]]);
       return {id:job.id,text,at,handle,accountId,media:media?.name,status,
-        reason:job.returnvalue?.reason||job.failedReason,finishedAt:job.finishedOn,startedAt:job.processedOn};
+        reason:job.returnvalue?.reason||job.failedReason,finishedAt:job.finishedOn,startedAt:job.processedOn,
+        stage:types[i]==='active'&&typeof job.progress==='object'?job.progress:null};
     })).sort((a,b)=>b.at-a.at);
   }
   return {

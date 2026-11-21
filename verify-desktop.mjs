@@ -12,7 +12,7 @@ if(!process.argv.includes('--download')){
  await cp(resolve('redis-test',bundle),join(runtime,bundle),{recursive:true});
 }
 const packaged=process.argv.includes('--packaged');
-const options={executablePath:packaged?resolve('versao-014/win-unpacked/ThreadFlow.exe'):require('electron'),
+const options={executablePath:packaged?resolve('versao-015/win-unpacked/ThreadFlow.exe'):require('electron'),
  args:[...(packaged?[]:['.']),'--user-data-dir='+profile,'--minimized']};
 let app=await electron.launch(options);
 try{

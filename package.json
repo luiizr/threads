@@ -1,45 +1,70 @@
 {
   "name": "threadflow",
   "productName": "ThreadFlow",
-  "version": "0.1.6",
+  "version": "1.1.0",
+  "description": "ThreadFlow - agendador local para varias contas do Threads",
+  "main": "./out/main/index.js",
+  "author": "ThreadFlow",
   "private": true,
-  "description": "Agendador local de publicações do Threads",
-  "type": "module",
-  "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
-    "design": "node build-design.mjs",
-    "dist": "electron-builder --win nsis --x64"
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "icon": "node scripts/make-icon.mjs",
+    "dist": "npm run icon && electron-vite build && electron-builder --win nsis --x64"
+  },
+  "dependencies": {
+    "playwright-core": "1.65.1"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "5.1.0",
+    "@fontsource/jetbrains-mono": "5.1.1",
+    "@types/node": "22.10.2",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "autoprefixer": "10.4.20",
+    "electron": "39.8.10",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "2.3.0",
+    "lucide-react": "0.468.0",
+    "postcss": "8.4.49",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "recharts": "2.15.0",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.7.2",
+    "vite": "5.4.11"
   },
   "build": {
-    "appId": "local.threadflow.desktop",
-    "npmRebuild": false,
+    "appId": "com.threadflow.desktop",
+    "productName": "ThreadFlow",
     "directories": {
-      "output": "release"
+      "output": "dist",
+      "buildResources": "build"
     },
     "files": [
-      "src/**/*",
-      "package.json",
-      "!**/*.map"
+      "out/**/*",
+      "resources/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/playwright-core/**",
+      "resources/**"
     ],
     "win": {
       "target": "nsis",
-      "signAndEditExecutable": false
+      "icon": "build/icon.png"
     },
     "nsis": {
       "oneClick": true,
-      "perMachine": false
+      "perMachine": false,
+      "runAfterFinish": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ThreadFlow",
+      "artifactName": "ThreadFlow-Setup-${version}.exe",
+      "deleteAppDataOnUninstall": false
     }
-  },
-  "dependencies": {
-    "bullmq": "^6.7.8",
-    "ioredis": "^6.0.0",
-    "playwright-core": "^1.65.1"
-  },
-  "devDependencies": {
-    "electron": "^41.7.1",
-    "electron-builder": "^26.18.0",
-    "postcss": "^8.5.33",
-    "tailwindcss": "^3.4.19"
   }
 }

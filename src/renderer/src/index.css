@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    background: #0b0f17;
+    color: #f8fafc;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #334155 transparent;
+  }
+  ::selection {
+    background: rgba(139, 92, 246, 0.4);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .drag {
+    -webkit-app-region: drag;
+  }
+  .no-drag {
+    -webkit-app-region: no-drag;
+  }
+  input,
+  textarea,
+  select {
+    color-scheme: dark;
+  }
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #0b0f17, 0 0 0 4px #8b5cf6;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-s2 bg-s1;
+  }
+  .card2 {
+    @apply rounded-xl border border-s3 bg-s2;
+  }
+  .input {
+    @apply w-full rounded-lg border border-s2 bg-canvas px-3 py-2 text-base text-ink placeholder:text-mute focus:border-violet;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-sub;
+  }
+  .mono {
+    @apply font-mono text-xs tabular;
+  }
+  .kicker {
+    @apply font-mono text-xs2 font-medium uppercase tracking-wider text-sub;
+  }
+}

@@ -82,9 +82,13 @@ function requireQueue(){if(!queue?.ready||redisBusy)throw Error('Conecte o Redis
 async function provisionLocal(){
   if(provisioning)throw Error('O Redis local está sendo preparado.');
   provisioning=true;
+  redisError='';
+  notify();
   try{
     const credentials=local.managed||{port:await availablePort(),password:randomBytes(24).toString('hex')};
+    if(!local.managed)await persist(state=>({...state,managed:credentials}));
     managedUrl=await startLocalRedis(root,credentials);
+    if(closing){await stopLocalRedis(managedUrl);return;}
     await redisConnect(managedUrl);
     await persist(state=>({...state,managed:credentials,useManaged:true,redis:managedUrl}));
   }finally{provisioning=false;notify();}
@@ -187,7 +191,7 @@ async function readiness(){
   let jobs=null;
   if(queue?.ready)try{jobs=await queue.list();}catch{}
   return {accounts:local.accounts.map(publicAccount),jobs,redisReady:jobs!==null,redisError,autostart:app.getLoginItemSettings().openAtLogin,
-    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,slots:queue?.concurrency??publicationSlots(),profileName:local.profileName||''};
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,slots:queue?.concurrency??publicationSlots(),profileName:local.profileName||'',provisioning};
 }
 async function start(){
   root=app.getPath('userData');
@@ -195,7 +199,7 @@ async function start(){
   dataFile=path.join(root,'workspace.bin');mediaDir=path.join(root,'media');
   await fs.mkdir(mediaDir,{recursive:true});
   try{local=JSON.parse(safeStorage.decryptString(await fs.readFile(dataFile)));}
-  catch(error){if(error.code!=='ENOENT')throw error;await persist({installationId:randomUUID(),accounts:[],welcome:true,redis:'redis://127.0.0.1:6379/'});}
+  catch(error){if(error.code!=='ENOENT')throw error;await persist({installationId:randomUUID(),accounts:[],welcome:true,useManaged:true,redis:'redis://127.0.0.1:6379/'});}
   register('snapshot',readiness);
   register('navigate',(route,flow)=>{if(route==='overview'&&local.welcome)persist(state=>({...state,welcome:false})).catch(()=>{});void show(route,flow).catch(()=>{});});
   register('redis',value=>redisConnect(value,true));
@@ -229,9 +233,13 @@ async function start(){
   tray.on('double-click',reveal);
   tray.setContextMenu(Menu.buildFromTemplate([{label:'Abrir ThreadFlow',click:reveal},{label:'Ocultar janela',click:()=>window.hide()},{type:'separator'},{label:'Sair do ThreadFlow',click:()=>app.quit()}]));
   window.once('ready-to-show',()=>{if(!process.argv.includes('--minimized'))window.show();});
+  const managedFailure=error=>{redisError=error.message;notify();};
+  const override=process.env.THREADFLOW_REDIS_URL;
+  if(!override&&local.useManaged===true)void provisionLocal().catch(managedFailure);
+  else void redisConnect(override||local.redis).catch(()=>{
+    if(!override&&local.useManaged===undefined&&local.redis==='redis://127.0.0.1:6379/')void provisionLocal().catch(managedFailure);
+  });
   await show(local.welcome?'welcome':'overview');
-  if(local.useManaged&&!process.env.THREADFLOW_REDIS_URL)void provisionLocal().catch(error=>{redisError=error.message;notify();});
-  else void redisConnect(process.env.THREADFLOW_REDIS_URL||local.redis).catch(()=>{});
 }
 if(!app.requestSingleInstanceLock())app.quit();
 else{

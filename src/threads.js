@@ -1,13 +1,35 @@
 import {chromium} from 'playwright-core';
+import {spawn} from 'node:child_process';
+import {createRequire} from 'node:module';
+import path from 'node:path';
 export const home='https://www.threads.com/';
 const waitMs=120000;
+const require=createRequire(import.meta.url);
+const unavailable=/Executable doesn't exist|distribution .*not found/i;
+let browserDownload;
+function installChromium(){
+  browserDownload ||= new Promise((resolve,reject)=>{
+    const cli=path.join(path.dirname(require.resolve('playwright-core/package.json')),'cli.js');
+    const child=spawn(process.execPath,[cli,'install','chromium'],{
+      windowsHide:true,stdio:'ignore',env:{...process.env,...(process.versions.electron?{ELECTRON_RUN_AS_NODE:'1'}:{})}
+    });
+    const timer=setTimeout(()=>child.kill(),480000);
+    child.once('error',()=>{clearTimeout(timer);reject(Error('Não foi possível iniciar o download do navegador.'));});
+    child.once('close',code=>{
+      clearTimeout(timer);
+      if(code===0)resolve();else reject(Error('O Chromium não pôde ser baixado. Verifique a internet e tente novamente.'));
+    });
+  }).finally(()=>{browserDownload=null;});
+  return browserDownload;
+}
 export class SessionError extends Error {}
 export async function launch(headless=true){
-  try{return await chromium.launch({channel:'msedge',headless});}
-  catch(error){
-    if(!/Executable doesn't exist|distribution .*not found/i.test(error.message))throw error;
-    return chromium.launch({channel:'chrome',headless});
+  for(const channel of ['msedge','chrome',undefined]){
+    try{return await chromium.launch({channel,headless,timeout:waitMs});}
+    catch(error){if(!unavailable.test(error.message))throw error;}
   }
+  await installChromium();
+  return chromium.launch({headless,timeout:waitMs});
 }
 export async function openHome(page){
   await page.goto(home,{waitUntil:'domcontentloaded',timeout:waitMs});

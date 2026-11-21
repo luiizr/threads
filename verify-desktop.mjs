@@ -7,10 +7,12 @@ const require=createRequire(import.meta.url);
 const profile=await mkdtemp(resolve('redis-test-profile-'));
 const runtime=join(profile,'redis','runtime');
 const bundle='Redis-8.2.10-Windows-x64-msys2';
-await mkdir(runtime,{recursive:true});
-await cp(resolve('redis-test',bundle),join(runtime,bundle),{recursive:true});
+if(!process.argv.includes('--download')){
+ await mkdir(runtime,{recursive:true});
+ await cp(resolve('redis-test',bundle),join(runtime,bundle),{recursive:true});
+}
 const packaged=process.argv.includes('--packaged');
-const options={executablePath:packaged?resolve('versao-013/win-unpacked/ThreadFlow.exe'):require('electron'),
+const options={executablePath:packaged?resolve('versao-014/win-unpacked/ThreadFlow.exe'):require('electron'),
  args:[...(packaged?[]:['.']),'--user-data-dir='+profile,'--minimized']};
 let app=await electron.launch(options);
 try{
@@ -19,6 +21,7 @@ try{
  const page=await app.firstWindow();
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await page.getByRole('heading',{name:'Bem-vindo ao ThreadFlow'}).waitFor();
+ await page.getByRole('status').filter({hasText:'Redis conectado'}).waitFor({timeout:110000});
  const inspect=async()=>{
    assert.doesNotMatch(await page.locator('body').innerText(),/graph api|oauth|api oficial/i);
    assert.equal(await page.locator('img:not([src]),img[src=""]').count(),0);
@@ -43,7 +46,6 @@ try{
    assert.equal(await page.getByText(/Falha ao abrir a tela/).count(),0);
    await inspect();
  }
- await page.getByRole('button',{name:'Preparar Redis neste computador'}).click();
  await page.getByText('Redis conectado',{exact:true}).waitFor({timeout:15000});
  const state=await page.evaluate(()=>window.threadflow.invoke('snapshot'));
  assert.ok(state.redisReady);
@@ -78,5 +80,5 @@ try{
  await accounts.selectOption('fixture-1');
  assert.equal(await overview.getByText('@primeira.teste · Sessão salva',{exact:true}).count(),1);
  assert.equal(await overview.getByText('@segunda.teste · Reconectar',{exact:true}).count(),0);
- console.log('Electron: seis telas, Redis local autenticado, estado real vazio, formulário e fechamento mantendo o processo na bandeja.');
+ console.log('Electron: Redis instalado e iniciado automaticamente, seis telas, estado real vazio, formulário e fechamento mantendo o processo na bandeja.');
 }finally{await app.close();await rm(profile,{recursive:true,maxRetries:5,retryDelay:300});}

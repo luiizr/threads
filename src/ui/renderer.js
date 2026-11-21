@@ -91,7 +91,7 @@ function prepare(){
   while(staticText.nextNode()){
     const node=staticText.currentNode;
     if(node.parentElement?.closest('style,script'))continue;
-    node.textContent=node.textContent.replaceAll('Luiz Silva','Perfil local').replaceAll('v1.4','v0.1.3')
+    node.textContent=node.textContent.replaceAll('Luiz Silva','Perfil local').replaceAll('v1.4','v0.1.4')
       .replaceAll('Banco SQLite local seguro.','').replaceAll('Armazenado no SQLite local','Armazenado neste computador');
   }
   for(const control of main.querySelectorAll('button,input,select,textarea'))control.disabled=true;
@@ -110,8 +110,9 @@ function prepare(){
       await api.invoke('navigate','accounts','connect');
     });
     existingButton(/continuar para conexão/i,continueConnection);
-    cta.append(element('p','Conecte o Redis e entre no Threads em uma janela separada para salvar seu primeiro perfil.'),
-      button('Configurar Redis',()=>api.invoke('navigate','settings')),button('Conectar conta',continueConnection,true),
+    refs.firstRun=element('p','Preparando a fila local…');refs.firstRun.setAttribute('role','status');
+    cta.append(refs.firstRun,element('p','Entre no Threads em uma janela separada para salvar seu primeiro perfil.'),
+      button('Configurações da fila',()=>api.invoke('navigate','settings')),button('Conectar conta',continueConnection,true),
       button('Ir para métricas',()=>action(async()=>{if(refs.profile)await api.invoke('profile',refs.profile.value);await api.invoke('navigate','overview');})));
     place(cta);
     existingButton(/começar|iniciar/i,()=>api.invoke('navigate','accounts'));
@@ -201,6 +202,7 @@ function prepare(){
       try{await api.invoke('redis-local');feedback('Redis local pronto.');await refresh();}
       finally{localRedis.disabled=false;}
     }),true);
+    refs.localRedis=localRedis;
     config.append(refs.redisStatus,localRedis,field,button('Conectar Redis existente',()=>action(async()=>{await api.invoke('redis',field.value||field.placeholder);field.value='';await refresh();})),auto,refs.zone,
       element('p','Fechar a janela mantém a fila ativa na bandeja. O computador precisa estar ligado e conectado à internet.'));
     main.prepend(config);
@@ -246,6 +248,9 @@ function renderProfile(){
 function render(){
   if(!snapshot)return;
   const {accounts,jobs,redisReady}=snapshot;
+  const redisStatus=redisReady?'Redis conectado':snapshot.provisioning?'Preparando Redis local…':snapshot.redisError||'Redis desconectado';
+  if(refs.firstRun)refs.firstRun.textContent=redisStatus;
+  if(refs.localRedis)refs.localRedis.disabled=snapshot.provisioning;
   if(accountFilter&&!accounts.some(item=>item.id===accountFilter))accountFilter='';
   if(refs.headerAccounts){
     const signature=JSON.stringify(accounts.map(({id,handle,name,pending})=>[id,handle,name,pending]));
@@ -259,7 +264,7 @@ function render(){
   }
   const visibleAccounts=accountFilter?accounts.filter(account=>account.id===accountFilter):accounts;
   if(refs.profile&&!refs.profile.dataset.loaded){refs.profile.value=snapshot.profileName||'';refs.profile.dataset.loaded='1';renderProfile();}
-  if(refs.redisStatus)refs.redisStatus.textContent=redisReady?'Redis conectado':snapshot.redisError||'Redis desconectado';
+  if(refs.redisStatus)refs.redisStatus.textContent=redisStatus;
   if(refs.autostart)refs.autostart.checked=snapshot.autostart;
   if(refs.zone)refs.zone.textContent='Fuso do Windows · '+snapshot.timezone+' · '+snapshot.slots+' vaga(s) de publicação simultânea';
   if(refs.accountCount)refs.accountCount.textContent=accounts.length+' contas salvas · '+accounts.filter(item=>item.pending).length+' para reconectar';
@@ -330,7 +335,7 @@ function loginDialog(id){
   box.append(element('p','Entre manualmente na janela do Threads. Depois, volte e salve o perfil.'));
   const msg=element('p','');msg.setAttribute('role','status');box.append(msg);
   const run=async fn=>{try{await fn();}catch(error){msg.textContent=error.message.replace(/^Error invoking remote method '[^']+': Error: /,'');}};
-  const open=button('Abrir Threads',()=>run(async()=>{open.disabled=true;try{await api.invoke('open-login',id);openedLogin=true;msg.textContent='Faça login na janela do navegador.';save.disabled=false;}catch(error){open.disabled=false;throw error;}}),true);
+  const open=button('Abrir Threads',()=>run(async()=>{open.disabled=true;msg.textContent='Abrindo navegador. No primeiro uso, o Chromium pode ser baixado.';try{await api.invoke('open-login',id);openedLogin=true;msg.textContent='Faça login na janela do navegador.';save.disabled=false;}catch(error){open.disabled=false;throw error;}}),true);
   const save=button('Salvar e verificar sessão',()=>run(async()=>{save.disabled=true;try{const item=await api.invoke('save-login');openedLogin=false;dialog.close();feedback('Sessão salva e verificada: '+item.handle);await refresh();}catch(error){save.disabled=false;throw error;}}));
   save.disabled=!openedLogin;
   box.append(open,save,button('Cancelar',()=>dialog.close()));
@@ -339,7 +344,7 @@ function loginDialog(id){
 }
 function compose(){
   if(!snapshot){feedback('Carregando o estado da fila.');return;}
-  if(!snapshot?.redisReady){feedback('Conecte o Redis em Configurações.',true);return;}
+  if(!snapshot?.redisReady){feedback(snapshot.provisioning?'A fila local está sendo preparada.':'Conecte o Redis em Configurações.',!snapshot.provisioning);return;}
   const form=element('form',undefined,'tf-form');
   const profiles=element('fieldset');profiles.append(element('legend','Contas de destino'));
   for(const account of snapshot.accounts){

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src data:; media-src data:; base-uri 'none'; form-action 'none'"><link rel="stylesheet" href="posts.css"><link rel="stylesheet" href="app.css"><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style></head><body data-route="posts" class="bg-surface font-body-md text-body-md text-on-surface min-h-screen selection:bg-primary selection:text-on-primary"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="flex flex-col"><div class="h-10 px-margin-window flex items-center gap-space-xs"><span class="w-3 h-3 rounded-full bg-error inline-block opacity-80 hover:opacity-100 transition-opacity cursor-pointer"></span><span class="w-3 h-3 rounded-full bg-secondary-fixed-dim inline-block opacity-80 hover:opacity-100 transition-opacity cursor-pointer"></span><span class="w-3 h-3 rounded-full bg-tertiary-fixed-dim inline-block opacity-80 hover:opacity-100 transition-opacity cursor-pointer"></span></div><div class="px-space-lg py-space-sm flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-semibold">ThreadFlow</span></div><span class="font-code-xs text-code-xs px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">v1.4</span></div><nav class="flex flex-col gap-space-xs px-space-md mt-space-lg" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg"><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="metricas" href="#"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-label-md text-label-md">Métricas</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="contas" href="#"><span class="material-symbols-outlined text-[20px]">switch_account</span><span class="font-label-md text-label-md">Contas</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="agendar" href="#"><span class="material-symbols-outlined text-[20px]">calendar_month</span><span class="font-label-md text-label-md">Agendar</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="publicacoes" href="#"><span class="material-symbols-outlined text-[20px]">dynamic_feed</span><span class="font-label-md text-label-md">Publicações</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="logs" href="#"><span class="material-symbols-outlined text-[20px]">terminal</span><span class="font-label-md text-label-md">Logs</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="configuracoes" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-label-md text-label-md">Configurações</span></a></nav></div><div class="p-space-md m-space-sm bg-surface-container rounded-xl flex items-center justify-between"><div class="flex items-center gap-space-sm overflow-hidden"><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Luiz Silva</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Social Media Lead</span></div></div><button class="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors" title="Opções da conta" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/85 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.12)]"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-xs rounded-lg cursor-pointer hover:bg-surface-container transition-colors"><div class="flex -space-x-2 overflow-hidden"><div class="w-5 h-5 rounded-full bg-primary flex items-center justify-center font-code-xs text-code-xs text-on-primary font-bold">1</div><div class="w-5 h-5 rounded-full bg-secondary flex items-center justify-center font-code-xs text-code-xs text-on-secondary font-bold">2</div><div class="w-5 h-5 rounded-full bg-tertiary flex items-center justify-center font-code-xs text-code-xs text-on-tertiary font-bold">3</div></div><span class="font-label-md text-label-md text-on-surface font-medium">Todas as contas (4)</span><span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span><span class="font-code-xs text-code-xs text-on-surface-variant">Sincronizado há 2 min</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container px-space-md py-space-xs rounded-lg text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm">Pesquisar...</span><kbd class="font-code-xs text-code-xs bg-surface-container-highest text-on-surface-variant px-1.5 py-0.5 rounded ml-space-sm">⌘K</kbd></div><button class="flex items-center gap-space-xs bg-gradient-to-r from-secondary-container to-inverse-primary hover:from-primary hover:to-secondary-container text-on-primary-fixed font-headline-sm text-headline-sm px-space-lg py-space-xs rounded-lg transition-all shadow-md active:translate-y-0.5 cursor-pointer" type="button"><span class="material-symbols-outlined text-[20px]">add</span><span>Nova publicação</span></button></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-4rem)] p-space-lg"><div class="flex flex-col w-full">
+<!-- Interactive View State Controller -->
+<div class="flex flex-col gap-space-lg w-full">
+<!-- Active Route Sync Script (Sidebar indicator) -->
+
+<!-- Header & Action Ribbon -->
+<header class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-xs">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Publicações &amp; Fila</h1>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-medium">48 itens</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Gerencie agendamentos, histórico de envios e rascunhos em todas as contas conectadas.</p>
+</div>
+<!-- Actions & Segmented Control -->
+<div class="flex items-center flex-wrap gap-space-sm">
+<!-- View Toggle Switch -->
+<div class="flex items-center p-1 bg-surface-container-low rounded-xl">
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-surface-container text-primary shadow-sm font-label-md text-label-md transition-all" id="view-btn-lista">
+<span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+<span>Lista</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/50 font-label-md text-label-md transition-all" id="view-btn-calendario">
+<span class="material-symbols-outlined text-[18px]">calendar_view_month</span>
+<span>Calendário</span>
+</button>
+</div>
+<div class="h-6 w-px bg-surface-container-highest mx-space-xs hidden sm:block"></div>
+<!-- Import / Batch button -->
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-label-md font-label-md transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">upload_file</span>
+<span>Importar CSV</span>
+</button>
+<!-- New Post Primary Button -->
+<button class="flex items-center gap-space-xs px-space-lg py-2 rounded-lg bg-gradient-to-r from-secondary-container via-inverse-primary to-primary text-on-primary font-headline-sm text-headline-sm font-semibold shadow-lg hover:shadow-primary/25 hover:brightness-110 active:translate-y-0.5 transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Nova publicação</span>
+</button>
+</div>
+</header>
+<!-- Quick Status Filter Strip -->
+<section aria-label="Status rápido" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-space-sm">
+<!-- Todas -->
+<button class="status-tab group flex items-center justify-between p-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-left transition-all active:scale-[0.99] ring-1 ring-primary/40" type="button">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Todas</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">48</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">all_inclusive</span>
+</div>
+</button>
+<!-- Agendados -->
+<button class="status-tab group flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-left transition-all active:scale-[0.99]" type="button">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>Agendados
+          </span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">14</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+</div>
+</button>
+<!-- Publicando -->
+<button class="status-tab group flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-left transition-all active:scale-[0.99]" type="button">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>Publicando
+          </span>
+<span class="font-headline-md text-headline-md text-secondary font-semibold mt-0.5">1</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-secondary/15 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px] animate-spin">sync</span>
+</div>
+</button>
+<!-- Publicados -->
+<button class="status-tab group flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-left transition-all active:scale-[0.99]" type="button">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Publicados
+          </span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">29</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-emerald-950/40 flex items-center justify-center text-emerald-400">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</div>
+</button>
+<!-- Falharam -->
+<button class="status-tab group flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-left transition-all active:scale-[0.99]" type="button">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-error uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>Falharam
+          </span>
+<span class="font-headline-md text-headline-md text-error font-semibold mt-0.5">2</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-error-container/40 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]">error</span>
+</div>
+</button>
+<!-- Rascunhos -->
+<button class="status-tab group flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-left transition-all active:scale-[0.99]" type="button">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>Rascunhos
+          </span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">2</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">draft</span>
+</div>
+</button>
+</section>
+<!-- Dense Desktop Filter Toolbar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm p-space-md bg-surface-container-low rounded-xl">
+<!-- Left Filters -->
+<div class="flex flex-wrap items-center gap-space-sm flex-1 min-w-[320px]">
+<!-- Search -->
+<div class="relative flex-1 min-w-[240px] max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant pointer-events-none">search</span>
+<input class="w-full pl-9 pr-12 py-2 bg-surface-container rounded-lg text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant/70 focus:outline-none focus:ring-1 focus:ring-primary transition-all" id="post-search" placeholder="Buscar texto, hashtag ou ID..." type="text"/>
+<span class="absolute right-2.5 top-1/2 -translate-y-1/2 font-code-xs text-code-xs px-1.5 py-0.5 bg-surface-container-highest text-on-surface-variant rounded">/</span>
+</div>
+<!-- Accounts Dropdown Pill -->
+<div class="relative group">
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">groups</span>
+<span>Contas: <strong class="font-semibold text-primary">Todas (4)</strong></span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
+</button>
+<!-- Quick Account Filter Pills (Inline Scroll for Fast Switching) -->
+</div>
+<!-- Date Range Filter -->
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-tertiary">calendar_today</span>
+<span>19 Mar - 18 Abr 2025</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
+</button>
+<!-- Account Pill Quick Toggles -->
+<div class="hidden xl:flex items-center gap-1.5 pl-2 border-l border-surface-container-highest">
+<span class="font-code-xs text-code-xs text-on-surface-variant uppercase mr-1">Filtro:</span>
+<button class="px-2 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-primary font-code-xs text-code-xs font-semibold" type="button">@techpulse.br</button>
+<button class="px-2 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-code-xs text-code-xs" type="button">@modaurbana</button>
+<button class="px-2 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-code-xs text-code-xs" type="button">@luiz.insights</button>
+<button class="px-2 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-code-xs text-code-xs" type="button">@cafecreativo</button>
+</div>
+</div>
+<!-- Right Sort & View Info -->
+<div class="flex items-center gap-space-sm ml-auto">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">sort</span>
+<span class="hidden sm:inline">Ordenar:</span>
+<select class="bg-surface-container text-on-surface px-space-sm py-1.5 rounded-lg font-label-md text-label-md focus:outline-none cursor-pointer">
+<option>Mais recentes primeiro</option>
+<option>Data de agendamento</option>
+<option>Engajamento / Likes</option>
+<option>Falhas prioritárias</option>
+</select>
+</div>
+</div>
+</div>
+<!-- MAIN VIEW 1: Feed / List View (Active Default) -->
+<main class="flex flex-col gap-space-sm w-full transition-opacity duration-200" id="view-lista-container">
+<!-- Table Header Bar -->
+<div class="hidden md:grid grid-cols-12 gap-space-md px-space-lg py-2.5 bg-surface-container-lowest rounded-lg font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<div class="col-span-3">Data &amp; Conta</div>
+<div class="col-span-5">Conteúdo &amp; Mídia</div>
+<div class="col-span-2">Status &amp; Telemetria</div>
+<div class="col-span-2 text-right">Ações</div>
+</div>
+<!-- ROW 1: FALHOU (High Priority Attention UX) -->
+<article class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group relative overflow-hidden">
+<!-- Error accent strip -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<!-- Date & Account -->
+<div class="md:col-span-3 flex flex-col justify-start gap-1">
+<div class="flex items-center gap-2">
+<span class="font-code-xs text-code-xs font-semibold px-2 py-0.5 rounded bg-error-container/30 text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">event_busy</span>
+              Hoje, 14:30
+            </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">19 Mar</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<div class="relative">
+
+<span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-on-error font-bold">priority_high</span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">@cafecreativo</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant truncate">ID: #TH-8902</span>
+</div>
+</div>
+</div>
+<!-- Content Preview + Inline Error -->
+<div class="md:col-span-5 flex flex-col justify-between gap-space-xs">
+<div class="flex items-start gap-space-md">
+<div class="relative shrink-0 group/media cursor-pointer">
+
+<span class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg opacity-0 group-hover/media:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px] text-white">zoom_in</span>
+</span>
+<span class="absolute -bottom-1 -right-1 px-1 bg-surface-container-highest rounded font-code-xs text-[9px] text-on-surface">TIFF</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-md text-body-md text-on-surface line-clamp-2">
+                ☕ Dicas essenciais para manter o foco na criação diária sem depender de cafeína excessiva... <span class="text-primary font-medium">#criatividade</span> <span class="text-primary font-medium">#produtividade</span>
+</p>
+<!-- Inline Error Explanation Box -->
+<div class="flex items-start gap-1.5 mt-2 p-2 rounded-lg bg-error-container/20 text-error">
+<span class="material-symbols-outlined text-[15px] shrink-0 mt-0.5">report</span>
+<span class="font-body-sm text-body-sm leading-tight">
+<strong>Erro de upload:</strong> Formato <code class="font-code-xs bg-error-container/40 px-1 py-0.2 rounded">TIFF</code> não suportado pela Threads API. Use JPEG, PNG ou MP4.
+                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Status & Telemetry -->
+<div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-start gap-1.5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/30 text-error font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">cancel</span>
+            Falhou
+          </span>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-error underline underline-offset-2 flex items-center gap-1 transition-colors" type="button">
+<span>Ver stack trace</span>
+<span class="material-symbols-outlined text-[12px]">open_in_new</span>
+</button>
+</div>
+<!-- Actions -->
+<div class="md:col-span-2 flex items-center md:justify-end gap-space-xs mt-2 md:mt-0">
+<button class="px-3 py-1.5 rounded-lg bg-error text-on-error hover:brightness-110 font-label-md text-label-md font-semibold flex items-center gap-1 shadow-sm transition-all active:scale-95 cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[16px]">replay</span>
+<span>Tentar de novo</span>
+</button>
+<div class="relative">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Mais opções" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ROW 2: PUBLICANDO (Active State Animation) -->
+<article class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary animate-pulse"></div>
+<!-- Date & Account -->
+<div class="md:col-span-3 flex flex-col justify-start gap-1">
+<div class="flex items-center gap-2">
+<span class="font-code-xs text-code-xs font-semibold px-2 py-0.5 rounded bg-secondary/15 text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] animate-spin">refresh</span>
+              Agora (15:02)
+            </span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<div class="relative">
+
+<span class="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-secondary flex items-center justify-center animate-ping opacity-75"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">@techpulse.br</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant truncate">ID: #TH-9014</span>
+</div>
+</div>
+</div>
+<!-- Content Preview -->
+<div class="md:col-span-5 flex flex-col justify-center gap-space-xs">
+<div class="flex items-start gap-space-md">
+<div class="relative shrink-0">
+
+<span class="absolute -bottom-1 -right-1 px-1 bg-surface-container-highest rounded font-code-xs text-[9px] text-secondary">JSON</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-md text-body-md text-on-surface line-clamp-2">
+                🚀 Saiu a nova versão do SDK open-source para integração com o Sessão do Threads. Confira o benchmark e documentação detalhada...
+              </p>
+<!-- Progress Indicator -->
+<div class="w-full mt-2 bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-gradient-to-r from-secondary to-primary h-full w-2/3 rounded-full animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Status -->
+<div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-start gap-1">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/15 text-secondary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px] animate-spin">sync</span>
+            Publicando (2/3)
+          </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">Enviando container mídia...</span>
+</div>
+<!-- Actions -->
+<div class="md:col-span-2 flex items-center md:justify-end gap-space-xs mt-2 md:mt-0">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-error/20 hover:text-error text-on-surface-variant font-label-md text-label-md transition-colors cursor-pointer" type="button">
+            Cancelar envio
+          </button>
+<button class="p-1.5 rounded-lg text-on-surface-variant opacity-50 cursor-not-allowed" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</article>
+<!-- ROW 3: AGENDADO (@modaurbana - Carousel) -->
+<article class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group">
+<!-- Date & Account -->
+<div class="md:col-span-3 flex flex-col justify-start gap-1">
+<div class="flex items-center gap-2">
+<span class="font-code-xs text-code-xs font-semibold px-2 py-0.5 rounded bg-tertiary/10 text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">alarm</span>
+              Amanhã, 09:15
+            </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">20 Mar</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">@modaurbana</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant truncate">ID: #TH-9120</span>
+</div>
+</div>
+</div>
+<!-- Content Preview -->
+<div class="md:col-span-5 flex flex-col justify-center gap-space-xs">
+<div class="flex items-start gap-space-md">
+<div class="relative shrink-0">
+
+<span class="absolute -bottom-1 -right-1 px-1 bg-surface-container-highest rounded font-code-xs text-[9px] text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[10px]">photo_library</span> 4
+              </span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-md text-body-md text-on-surface line-clamp-2">
+                Alfaiataria contemporânea: como compor looks elegantes sem perder o conforto nos dias quentes de outono em SP.
+              </p>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-code-xs text-code-xs text-tertiary font-medium">Carrossel (4 fotos)</span>
+<span class="text-on-surface-variant/40">•</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">Tags adicionadas (3)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Status -->
+<div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-start gap-1">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">event_upcoming</span>
+            Agendado
+          </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">Fila automática 01</span>
+</div>
+<!-- Actions -->
+<div class="md:col-span-2 flex items-center md:justify-end gap-space-xs mt-2 md:mt-0">
+<button class="px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors cursor-pointer" type="button">
+            Editar
+          </button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Duplicar publicação" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Mais opções" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</article>
+<!-- ROW 4: AGENDADO (@luiz.insights) -->
+<article class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group">
+<!-- Date & Account -->
+<div class="md:col-span-3 flex flex-col justify-start gap-1">
+<div class="flex items-center gap-2">
+<span class="font-code-xs text-code-xs font-semibold px-2 py-0.5 rounded bg-tertiary/10 text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">alarm</span>
+              20 Mar, 18:00
+            </span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">@luiz.insights</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant truncate">ID: #TH-9145</span>
+</div>
+</div>
+</div>
+<!-- Content Preview -->
+<div class="md:col-span-5 flex flex-col justify-center gap-space-xs">
+<div class="flex items-start gap-space-md">
+<div class="relative shrink-0">
+
+<span class="absolute -bottom-1 -right-1 px-1 bg-surface-container-highest rounded font-code-xs text-[9px] text-on-surface">PNG</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-md text-body-md text-on-surface line-clamp-2">
+                O erro número 1 que criadores cometem ao tentar replicar a mesma estratégia de retenção do X/Twitter aqui no Threads...
+              </p>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-code-xs text-code-xs text-primary font-medium">Thread (1 de 3)</span>
+<span class="text-on-surface-variant/40">•</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">Horário nobre</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Status -->
+<div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-start gap-1">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">event_upcoming</span>
+            Agendado
+          </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">Envio via Playwright</span>
+</div>
+<!-- Actions -->
+<div class="md:col-span-2 flex items-center md:justify-end gap-space-xs mt-2 md:mt-0">
+<button class="px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors cursor-pointer" type="button">
+            Editar
+          </button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Duplicar" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Mais opções" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</article>
+<!-- ROW 5: PUBLICADO (@techpulse.br com métricas) -->
+<article class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group">
+<!-- Date & Account -->
+<div class="md:col-span-3 flex flex-col justify-start gap-1">
+<div class="flex items-center gap-2">
+<span class="font-code-xs text-code-xs font-semibold px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+              Ontem, 20:30
+            </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">18 Mar</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">@techpulse.br</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant truncate">ID: #TH-8812</span>
+</div>
+</div>
+</div>
+<!-- Content Preview -->
+<div class="md:col-span-5 flex flex-col justify-center gap-space-xs">
+<div class="flex items-start gap-space-md">
+<div class="relative shrink-0">
+
+<span class="absolute -bottom-1 -right-1 px-1 bg-surface-container-highest rounded font-code-xs text-[9px] text-emerald-400">POST</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-md text-body-md text-on-surface line-clamp-2">
+                5 ferramentas de IA locais que rodam 100% offline no seu Mac ou PC sem enviar telemetria pra nuvem...
+              </p>
+<!-- Live Post Micro Metrics -->
+<div class="flex items-center gap-3 mt-1 text-on-surface-variant font-code-xs text-code-xs">
+<span class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[13px] text-primary">visibility</span> 412 views
+                </span>
+<span class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[13px] text-error">favorite</span> 32 likes
+                </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">reply</span> 8 respostas
+                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Status -->
+<div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-start gap-1">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/40 text-emerald-400 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">done_all</span>
+            Publicado
+          </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">Taxa engajamento 7.8%</span>
+</div>
+<!-- Actions -->
+<div class="md:col-span-2 flex items-center md:justify-end gap-space-xs mt-2 md:mt-0">
+<a class="px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md transition-colors flex items-center gap-1" href="#">
+<span>Ver no Threads</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</a>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Ver métricas" type="button">
+<span class="material-symbols-outlined text-[18px]">insights</span>
+</button>
+</div>
+</article>
+<!-- ROW 6: RASCUNHO (@modaurbana) -->
+<article class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-lg rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group">
+<!-- Date & Account -->
+<div class="md:col-span-3 flex flex-col justify-start gap-1">
+<div class="flex items-center gap-2">
+<span class="font-code-xs text-code-xs font-semibold px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">history</span>
+              Salvo há 3 horas
+            </span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">@modaurbana</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant truncate">ID: #DR-0034</span>
+</div>
+</div>
+</div>
+<!-- Content Preview -->
+<div class="md:col-span-5 flex flex-col justify-center gap-space-xs">
+<div class="flex items-start gap-space-md">
+<!-- Empty Media Slot -->
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest/60 flex items-center justify-center text-on-surface-variant shrink-0 border border-dashed border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">add_photo_alternate</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">
+<span class="font-semibold text-on-surface">[Rascunho]</span> Guia de tecidos sustentáveis e marcas nacionais que estão transformando o mercado de moda consciente...
+              </p>
+<span class="font-code-xs text-code-xs text-on-surface-variant/80 mt-1">Nenhuma mídia anexada ainda</span>
+</div>
+</div>
+</div>
+<!-- Status -->
+<div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-start gap-1">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+            Rascunho
+          </span>
+<span class="font-code-xs text-code-xs text-on-surface-variant">Modificado por Luiz</span>
+</div>
+<!-- Actions -->
+<div class="md:col-span-2 flex items-center md:justify-end gap-space-xs mt-2 md:mt-0">
+<button class="px-2.5 py-1.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold hover:brightness-110 transition-colors cursor-pointer" type="button">
+            Continuar
+          </button>
+<button class="px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors cursor-pointer" type="button">
+            Agendar
+          </button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-surface-container-high transition-colors" title="Excluir rascunho" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</article>
+<!-- Pagination / Dense Status Footer -->
+<footer class="flex items-center justify-between p-space-md bg-surface-container-lowest rounded-xl mt-space-sm text-on-surface-variant font-label-md text-label-md">
+<div class="flex items-center gap-2">
+<span>Mostrando <strong class="text-on-surface">1 - 6</strong> de 48 publicações</span>
+<span class="text-surface-variant">•</span>
+<span class="font-code-xs text-code-xs text-tertiary">14 agendamentos nos próximos 30 dias</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded bg-surface-container text-on-surface-variant opacity-50 cursor-not-allowed" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-bold text-label-sm" type="button">1</button>
+<button class="px-2.5 py-1 rounded hover:bg-surface-container text-on-surface text-label-sm" type="button">2</button>
+<button class="px-2.5 py-1 rounded hover:bg-surface-container text-on-surface text-label-sm" type="button">3</button>
+<span class="px-1 text-on-surface-variant">...</span>
+<button class="px-2.5 py-1 rounded hover:bg-surface-container text-on-surface text-label-sm" type="button">8</button>
+<button class="p-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</footer>
+</main>
+<!-- MAIN VIEW 2: Interactive Calendar Grid View (Toggleable) -->
+<main class="hidden flex-col gap-space-md w-full transition-opacity duration-200" id="view-calendario-container">
+<!-- Calendar Nav Strip -->
+<div class="flex items-center justify-between p-space-md bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md" type="button">
+              Hoje
+            </button>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Março 2025</h2>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">Semana 12</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center p-1 bg-surface-container rounded-lg">
+<button class="px-2.5 py-1 rounded bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold" type="button">Mês</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm" type="button">Semana</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm" type="button">Dia</button>
+</div>
+</div>
+</div>
+<!-- Calendar 7-Day Grid Header -->
+<div class="grid grid-cols-7 gap-space-xs text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-1">
+<div>Seg (17)</div>
+<div>Ter (18)</div>
+<div class="text-primary font-bold">Qua (19 - Hoje)</div>
+<div>Qui (20)</div>
+<div>Sex (21)</div>
+<div>Sáb (22)</div>
+<div>Dom (23)</div>
+</div>
+<!-- Calendar Week / Days Grid -->
+<div class="grid grid-cols-7 gap-space-xs min-h-[500px]">
+<!-- Seg 17 -->
+<div class="flex flex-col gap-2 p-2 rounded-xl bg-surface-container-low min-h-[160px]">
+<span class="font-code-xs text-code-xs text-on-surface-variant self-end">17 Mar</span>
+<!-- Event Chip Published -->
+<div class="p-2 rounded-lg bg-emerald-950/40 text-emerald-400 flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">20:30</span>
+<span class="material-symbols-outlined text-[12px]">done</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@techpulse.br</span>
+<span class="font-body-sm text-[11px] truncate opacity-80">Setup dev 2025...</span>
+</div>
+</div>
+<!-- Ter 18 -->
+<div class="flex flex-col gap-2 p-2 rounded-xl bg-surface-container-low min-h-[160px]">
+<span class="font-code-xs text-code-xs text-on-surface-variant self-end">18 Mar</span>
+<!-- Event Chip Published -->
+<div class="p-2 rounded-lg bg-emerald-950/40 text-emerald-400 flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">20:30</span>
+<span class="material-symbols-outlined text-[12px]">done</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@techpulse.br</span>
+<span class="font-body-sm text-[11px] truncate opacity-80">5 IAs locais offline...</span>
+</div>
+</div>
+<!-- Qua 19 (Hoje) -->
+<div class="flex flex-col gap-2 p-2 rounded-xl bg-surface-container-low ring-1 ring-primary/40 relative min-h-[160px]">
+<div class="flex items-center justify-between">
+<span class="font-code-xs text-code-xs px-1.5 py-0.5 rounded bg-primary text-on-primary font-bold">Hoje</span>
+<span class="font-code-xs text-code-xs text-primary font-bold">19 Mar</span>
+</div>
+<!-- Event Chip Failed -->
+<div class="p-2 rounded-lg bg-error-container/30 text-error flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all ring-1 ring-error/40">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">14:30</span>
+<span class="material-symbols-outlined text-[12px]">error</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@cafecreativo</span>
+<span class="font-body-sm text-[11px] truncate text-error">Falhou: Formato TIFF</span>
+</div>
+<!-- Event Chip Publishing -->
+<div class="p-2 rounded-lg bg-secondary/20 text-secondary flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">15:02</span>
+<span class="material-symbols-outlined text-[12px] animate-spin">sync</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@techpulse.br</span>
+<span class="font-body-sm text-[11px] truncate opacity-90">SDK open-source...</span>
+</div>
+</div>
+<!-- Qui 20 -->
+<div class="flex flex-col gap-2 p-2 rounded-xl bg-surface-container-low min-h-[160px]">
+<span class="font-code-xs text-code-xs text-on-surface-variant self-end">20 Mar</span>
+<!-- Event Chip Scheduled 1 -->
+<div class="p-2 rounded-lg bg-tertiary/10 text-tertiary flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">09:15</span>
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@modaurbana</span>
+<span class="font-body-sm text-[11px] truncate opacity-80">Alfaiataria outono...</span>
+</div>
+<!-- Event Chip Scheduled 2 -->
+<div class="p-2 rounded-lg bg-tertiary/10 text-tertiary flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">18:00</span>
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@luiz.insights</span>
+<span class="font-body-sm text-[11px] truncate opacity-80">Retenção Threads...</span>
+</div>
+</div>
+<!-- Sex 21 -->
+<div class="flex flex-col gap-2 p-2 rounded-xl bg-surface-container-low min-h-[160px]">
+<span class="font-code-xs text-code-xs text-on-surface-variant self-end">21 Mar</span>
+<div class="p-2 rounded-lg bg-tertiary/10 text-tertiary flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">11:00</span>
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@cafecreativo</span>
+<span class="font-body-sm text-[11px] truncate opacity-80">Rotina matinal barista...</span>
+</div>
+</div>
+<!-- Sáb 22 -->
+<div class="flex flex-col gap-2 p-2 rounded-xl bg-surface-container-low min-h-[160px] opacity-75">
+<span class="font-code-xs text-code-xs text-on-surface-variant self-end">22 Mar</span>
+<button class="h-full flex flex-col items-center justify-center p-3 rounded-lg hover:bg-surface-container text-on-surface-variant/50 hover:text-on-surface transition-all group" type="button">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">add_circle</span>
+<span class="font-code-xs text-code-xs mt-1">Novo post</span>
+</button>
+</div>
+<!-- Dom 23 -->
+<div class="flex flex-col gap-2 p-2 rounded-xl bg-surface-container-low min-h-[160px] opacity-75">
+<span class="font-code-xs text-code-xs text-on-surface-variant self-end">23 Mar</span>
+<div class="p-2 rounded-lg bg-surface-container-highest text-on-surface-variant flex flex-col gap-1 cursor-pointer hover:brightness-125 transition-all">
+<div class="flex items-center justify-between font-code-xs text-[10px]">
+<span class="font-bold">19:30</span>
+<span class="material-symbols-outlined text-[12px]">edit_note</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold truncate text-on-surface">@luiz.insights</span>
+<span class="font-body-sm text-[11px] truncate opacity-80">[Rascunho] Análise...</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Interactive JavaScript Controller for Publicações Screen -->
+
+</div></main></div><script src="renderer.js"></script></body></html>

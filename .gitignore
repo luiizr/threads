@@ -1,0 +1,15 @@
+node_modules/
+.npm-cache/
+release/
+release-final/
+entrega/
+corrigido/
+ajustado/
+final/
+versao-*/
+redis-test*/
+*.exe
+*.blockmap
+workspace.bin*
+.env
+.env.*

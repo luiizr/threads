@@ -1,0 +1,45 @@
+{
+  "name": "threadflow",
+  "productName": "ThreadFlow",
+  "version": "0.1.3",
+  "private": true,
+  "description": "Agendador local de publicações do Threads",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "design": "node build-design.mjs",
+    "dist": "electron-builder --win nsis --x64"
+  },
+  "build": {
+    "appId": "local.threadflow.desktop",
+    "npmRebuild": false,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "!**/*.map"
+    ],
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    }
+  },
+  "dependencies": {
+    "bullmq": "^6.7.8",
+    "ioredis": "^6.0.0",
+    "playwright-core": "^1.65.1"
+  },
+  "devDependencies": {
+    "electron": "^41.7.1",
+    "electron-builder": "^26.18.0",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^3.4.19"
+  }
+}

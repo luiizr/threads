@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src data:; media-src data:; base-uri 'none'; form-action 'none'"><link rel="stylesheet" href="logs.css"><link rel="stylesheet" href="app.css"><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style></head><body data-route="logs" class="bg-surface font-body-md text-body-md text-on-surface min-h-screen selection:bg-primary selection:text-on-primary"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="flex flex-col"><div class="h-10 px-margin-window flex items-center gap-space-xs"><span class="w-3 h-3 rounded-full bg-error inline-block opacity-80 hover:opacity-100 transition-opacity cursor-pointer"></span><span class="w-3 h-3 rounded-full bg-secondary-fixed-dim inline-block opacity-80 hover:opacity-100 transition-opacity cursor-pointer"></span><span class="w-3 h-3 rounded-full bg-tertiary-fixed-dim inline-block opacity-80 hover:opacity-100 transition-opacity cursor-pointer"></span></div><div class="px-space-lg py-space-sm flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-semibold">ThreadFlow</span></div><span class="font-code-xs text-code-xs px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">v1.4</span></div><nav class="flex flex-col gap-space-xs px-space-md mt-space-lg" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg"><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="metricas" href="#"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-label-md text-label-md">Métricas</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="contas" href="#"><span class="material-symbols-outlined text-[20px]">switch_account</span><span class="font-label-md text-label-md">Contas</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="agendar" href="#"><span class="material-symbols-outlined text-[20px]">calendar_month</span><span class="font-label-md text-label-md">Agendar</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="publicacoes" href="#"><span class="material-symbols-outlined text-[20px]">dynamic_feed</span><span class="font-label-md text-label-md">Publicações</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="logs" href="#"><span class="material-symbols-outlined text-[20px]">terminal</span><span class="font-label-md text-label-md">Logs</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="configuracoes" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-label-md text-label-md">Configurações</span></a></nav></div><div class="p-space-md m-space-sm bg-surface-container rounded-xl flex items-center justify-between"><div class="flex items-center gap-space-sm overflow-hidden"><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Luiz Silva</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Social Media Lead</span></div></div><button class="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors" title="Opções da conta" type="button"><span class="material-symbols-outlined text-[18px]">more_vert</span></button></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/85 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.12)]"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-xs rounded-lg cursor-pointer hover:bg-surface-container transition-colors"><div class="flex -space-x-2 overflow-hidden"><div class="w-5 h-5 rounded-full bg-primary flex items-center justify-center font-code-xs text-code-xs text-on-primary font-bold">1</div><div class="w-5 h-5 rounded-full bg-secondary flex items-center justify-center font-code-xs text-code-xs text-on-secondary font-bold">2</div><div class="w-5 h-5 rounded-full bg-tertiary flex items-center justify-center font-code-xs text-code-xs text-on-tertiary font-bold">3</div></div><span class="font-label-md text-label-md text-on-surface font-medium">Todas as contas (4)</span><span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span><span class="font-code-xs text-code-xs text-on-surface-variant">Sincronizado há 2 min</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container px-space-md py-space-xs rounded-lg text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm">Pesquisar...</span><kbd class="font-code-xs text-code-xs bg-surface-container-highest text-on-surface-variant px-1.5 py-0.5 rounded ml-space-sm">⌘K</kbd></div><button class="flex items-center gap-space-xs bg-gradient-to-r from-secondary-container to-inverse-primary hover:from-primary hover:to-secondary-container text-on-primary-fixed font-headline-sm text-headline-sm px-space-lg py-space-xs rounded-lg transition-all shadow-md active:translate-y-0.5 cursor-pointer" type="button"><span class="material-symbols-outlined text-[20px]">add</span><span>Nova publicação</span></button></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-4rem)] p-space-lg"><div class="flex flex-col w-full">
+<!-- Dynamic Activation of Shell Nav Link -->
+
+<!-- Top Header Area -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md mb-space-lg">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm mb-1">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">Logs e diagnósticos</h1>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="font-code-xs text-code-xs text-on-surface font-medium">Monitoramento ativo (local)</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Histórico unificado de eventos de contas, telemetria de requisições e diagnósticos de publicação.
+      </p>
+</div>
+<!-- Top Action Buttons -->
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-colors shadow-sm cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Exportar logs</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-error font-label-md text-label-md transition-colors shadow-sm cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px]">delete_sweep</span>
+<span>Limpar logs antigos</span>
+</button>
+</div>
+</div>
+<!-- Filter & Search Bar Toolbar -->
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm mb-space-lg flex flex-col gap-space-sm">
+<div class="flex flex-col xl:flex-row gap-space-sm items-stretch xl:items-center justify-between">
+<!-- Search Bar -->
+<div class="relative flex-1 min-w-[280px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full pl-9 pr-12 py-2 bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/60 font-body-sm text-body-sm rounded-lg outline-none focus:ring-2 focus:ring-primary/40 transition-all" placeholder="Buscar por mensagem, código de erro ou ID de requisição..." type="text"/>
+<kbd class="absolute right-2.5 top-1/2 -translate-y-1/2 font-code-xs text-code-xs bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded">
+          /
+        </kbd>
+</div>
+<!-- Filter Controls -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<!-- Nível Filter Chips -->
+<div class="flex items-center bg-surface-container-lowest p-1 rounded-lg">
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button">
+            Todos (142)
+          </button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm inline-flex items-center gap-1 transition-colors" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Info (128)
+          </button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm inline-flex items-center gap-1 transition-colors" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Aviso (8)
+          </button>
+<button class="px-2.5 py-1 rounded bg-error-container/40 text-error font-label-sm text-label-sm inline-flex items-center gap-1 font-semibold transition-colors" type="button">
+<span class="material-symbols-outlined text-[13px]">close</span> Erro (6)
+          </button>
+</div>
+<!-- Tipo Selector -->
+<div class="relative">
+<button class="h-8 px-space-sm bg-surface-container-lowest hover:bg-surface-container rounded-lg font-label-sm text-label-sm text-on-surface inline-flex items-center gap-1.5 transition-colors" type="button">
+<span class="text-on-surface-variant">Tipo:</span>
+<span>Todos</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</button>
+</div>
+<!-- Conta Selector -->
+<div class="relative">
+<button class="h-8 px-space-sm bg-surface-container-lowest hover:bg-surface-container rounded-lg font-label-sm text-label-sm text-on-surface inline-flex items-center gap-1.5 transition-colors" type="button">
+<div class="flex -space-x-1.5">
+<span class="w-4 h-4 rounded-full bg-primary-container inline-block"></span>
+<span class="w-4 h-4 rounded-full bg-secondary-container inline-block"></span>
+</div>
+<span>Todas as contas</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</button>
+</div>
+<!-- Period Selector -->
+<div class="relative">
+<button class="h-8 px-space-sm bg-surface-container-lowest hover:bg-surface-container rounded-lg font-label-sm text-label-sm text-on-surface inline-flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span>
+<span>Hoje (19 Mar 2025)</span>
+</button>
+</div>
+<!-- Only Errors Toggle -->
+<button class="h-8 px-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface inline-flex items-center gap-1.5 font-label-sm text-label-sm cursor-pointer transition-colors" title="Filtrar erros" type="button">
+<span class="material-symbols-outlined text-[16px] text-error">filter_alt</span>
+<span class="font-medium">Apenas erros</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Master-Detail Split Workspace -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT PANE: Unified Activity Timeline (approx 65%) -->
+<div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-space-md">
+<!-- Section: Hoje -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-space-sm py-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Hoje — 19 de Março</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant/80">38 eventos registrados</span>
+</div>
+<!-- Log Row 1 (SELECTED / ERROR - Active state) -->
+<div class="p-space-md rounded-xl bg-surface-container-high/90 shadow-md relative cursor-pointer group transition-all duration-150">
+<div class="absolute left-0 top-3 bottom-3 w-1 bg-error rounded-r"></div>
+<div class="flex items-start justify-between gap-space-sm pl-2">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">14:30:12</span>
+<!-- Badge Erro -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">cancel</span>
+<span>Erro</span>
+</span>
+<!-- Tag Tipo -->
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container-lowest text-on-surface-variant font-medium">
+                Publicação
+              </span>
+<!-- Account Chip -->
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-lowest">
+<span class="w-3.5 h-3.5 rounded-full bg-secondary-container text-[9px] flex items-center justify-center font-bold text-on-secondary">C</span>
+<span class="font-label-sm text-label-sm text-on-surface">@cafecreativo</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary shrink-0">
+<span class="font-code-xs text-code-xs font-semibold uppercase">Inspecionando</span>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</div>
+</div>
+<div class="pl-2 mt-2">
+<p class="font-body-md text-body-md text-on-surface font-medium leading-relaxed">
+              Falha ao publicar: Formato TIFF não suportado pela Threads API
+            </p>
+<div class="flex items-center gap-space-md mt-1.5 font-code-xs text-code-xs text-on-surface-variant">
+<span>Endpoint: /threads/media</span>
+<span>•</span>
+<span class="text-error font-medium">HTTP 400 (Media format error)</span>
+<span>•</span>
+<span>Req: #LOG-9402</span>
+</div>
+</div>
+</div>
+<!-- Log Row 2 (AVISO) -->
+<div class="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">14:28:05</span>
+<!-- Badge Aviso -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-950/40 text-amber-400 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+<span>Aviso</span>
+</span>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
+                Sessão do Threads
+              </span>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-3.5 h-3.5 rounded-full bg-primary-container text-[9px] flex items-center justify-center font-bold text-on-primary">L</span>
+<span class="font-label-sm text-label-sm text-on-surface">@luiz.insights</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity text-[18px]">chevron_right</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1.5">
+            Token de acesso expira em 3 dias. Renovação automática pendente antes da próxima publicação agendada.
+          </p>
+</div>
+<!-- Log Row 3 (INFO) -->
+<div class="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">12:15:40</span>
+<!-- Badge Info -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/40 text-emerald-400 font-label-sm text-label-sm font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Info</span>
+</span>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
+                Publicação
+              </span>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-3.5 h-3.5 rounded-full bg-tertiary-container text-[9px] flex items-center justify-center font-bold text-on-tertiary">T</span>
+<span class="font-label-sm text-label-sm text-on-surface">@techpulse.br</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity text-[18px]">chevron_right</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1.5">
+            Publicação enviada com sucesso no Threads (ID: #TH-8812). Latência: 412ms.
+          </p>
+</div>
+<!-- Log Row 4 (ERRO) -->
+<div class="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">09:42:18</span>
+<!-- Badge Erro -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">cancel</span>
+<span>Erro</span>
+</span>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
+                Conta
+              </span>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-3.5 h-3.5 rounded-full bg-secondary-container text-[9px] flex items-center justify-center font-bold text-on-secondary">M</span>
+<span class="font-label-sm text-label-sm text-on-surface">@modaurbana</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity text-[18px]">chevron_right</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1.5">
+            Falha ao publicar: Limite diário de publicações atingido (250/250). Cota reiniciará à meia-noite (UTC).
+          </p>
+</div>
+<!-- Log Row 5 (INFO) -->
+<div class="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">08:10:04</span>
+<!-- Badge Info -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/40 text-emerald-400 font-label-sm text-label-sm font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Info</span>
+</span>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
+                Fila
+              </span>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-3.5 h-3.5 rounded-full bg-secondary-container text-[9px] flex items-center justify-center font-bold text-on-secondary">M</span>
+<span class="font-label-sm text-label-sm text-on-surface">@modaurbana</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity text-[18px]">chevron_right</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1.5">
+            Carrossel de 4 imagens processado e agendado para amanhã às 09:15 com pré-validação aprovada.
+          </p>
+</div>
+</div>
+<!-- Section: Ontem -->
+<div class="flex flex-col gap-space-xs mt-space-md">
+<div class="flex items-center justify-between px-space-sm py-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Ontem — 18 de Março</span>
+<span class="font-code-xs text-code-xs text-on-surface-variant/80">104 eventos arquivados</span>
+</div>
+<!-- Log Row 6 (AVISO) -->
+<div class="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">21:40:19</span>
+<!-- Badge Aviso -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-950/40 text-amber-400 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+<span>Aviso</span>
+</span>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
+                API Threads
+              </span>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">dns</span>
+<span class="font-label-sm text-label-sm text-on-surface">Sistema</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity text-[18px]">chevron_right</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1.5">
+            Taxa de requisições próxima ao limite da Sessão do Threads (85% da cota por hora). Fila de disparo espaçada em +150ms.
+          </p>
+</div>
+<!-- Log Row 7 (INFO) -->
+<div class="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">18:00:00</span>
+<!-- Badge Info -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/40 text-emerald-400 font-label-sm text-label-sm font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Info</span>
+</span>
+<span class="font-code-xs text-code-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
+                Background Job
+              </span>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">sync</span>
+<span class="font-label-sm text-label-sm text-on-surface">ThreadFlow Core</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity text-[18px]">chevron_right</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1.5">
+            Sincronização periódica concluída sem falhas (4 contas ativas, métricas atualizadas).
+          </p>
+</div>
+</div>
+</div>
+<!-- RIGHT PANE: Detail Drawer / Panel (approx 35%) -->
+<div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-space-md sticky top-20">
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-lg flex flex-col gap-space-md">
+<!-- Drawer Header -->
+<div class="flex items-start justify-between gap-space-sm pb-space-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Diagnóstico de Erro</h2>
+<span class="px-2 py-0.5 rounded-full bg-error-container/30 text-error font-code-xs text-code-xs font-semibold">#LOG-9402</span>
+</div>
+<span class="font-code-xs text-code-xs text-on-surface-variant mt-0.5">14:30:12 (Há 12 minutos)</span>
+</div>
+<button class="w-7 h-7 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" title="Fechar painel" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Status Indicator Pill -->
+<div class="p-space-sm rounded-lg bg-error-container/20 flex items-center gap-space-xs text-error">
+<span class="material-symbols-outlined text-[18px] shrink-0">error</span>
+<span class="font-label-sm text-label-sm font-semibold">Erro de Publicação (HTTP 400 — Unsupported Media)</span>
+</div>
+<!-- Quick Drawer Actions -->
+<div class="flex items-center gap-space-xs flex-wrap">
+<button class="flex-1 inline-flex items-center justify-center gap-1.5 px-space-md py-2 rounded-lg bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md font-semibold transition-all shadow-sm cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Tentar novamente</span>
+</button>
+<button class="inline-flex items-center gap-1 px-space-sm py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors cursor-pointer" title="Reconectar conta" type="button">
+<span class="material-symbols-outlined text-[18px]">autorenew</span>
+<span>Reconectar</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" title="Copiar diagnóstico" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<!-- Section 1: O que aconteceu -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-on-surface font-headline-sm text-headline-sm font-semibold">
+<span class="material-symbols-outlined text-[18px] text-error">info</span>
+<span>O que aconteceu</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            A publicação agendada para <strong class="text-on-surface font-medium">@cafecreativo</strong> falhou durante a fase de upload de mídia no endpoint oficial <code class="font-code-xs text-code-xs px-1 rounded bg-surface-container-lowest">/threads/media</code>.
+          </p>
+</div>
+<!-- Section 2: Por que aconteceu -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-on-surface font-headline-sm text-headline-sm font-semibold">
+<span class="material-symbols-outlined text-[18px] text-amber-400">help</span>
+<span>Por que aconteceu</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            A Sessão do Threads do Threads aceita exclusivamente os formatos <strong class="text-on-surface">JPEG</strong>, <strong class="text-on-surface">PNG</strong> e vídeos <strong class="text-on-surface">MP4/MOV</strong> (codec H.264). O arquivo anexado (<code class="font-code-xs text-code-xs px-1 rounded bg-surface-container-lowest">xicara_espresso.tiff</code>) está no formato TIFF, incompatível com os servidores da Meta.
+          </p>
+</div>
+<!-- Section 3: Como resolver (Actionable Step-by-Step) -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-sm">
+<div class="flex items-center gap-1.5 text-on-surface font-headline-sm text-headline-sm font-semibold">
+<span class="material-symbols-outlined text-[18px] text-emerald-400">build</span>
+<span>Como resolver</span>
+</div>
+<div class="flex flex-col gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-start gap-2">
+<span class="w-4 h-4 rounded-full bg-surface-container-highest text-on-surface font-code-xs text-code-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+<span>O ThreadFlow pode converter automaticamente esta imagem para <strong>PNG de alta resolução</strong> sem perda visível.</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="w-4 h-4 rounded-full bg-surface-container-highest text-on-surface font-code-xs text-code-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+<span>Clique na ação rápida abaixo para executar o upload corrigido de imediato.</span>
+</div>
+</div>
+<button class="mt-1 w-full inline-flex items-center justify-center gap-2 py-2 px-space-md rounded-lg bg-gradient-to-r from-secondary-container to-inverse-primary hover:from-primary hover:to-secondary-container text-on-primary-fixed font-label-md text-label-md font-semibold transition-all shadow cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px]">auto_fix_high</span>
+<span>Converter para PNG e reenviar agora</span>
+</button>
+</div>
+<!-- Section 4: Publicação relacionada (Mini Preview) -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Publicação Relacionada</span>
+<span class="font-code-xs text-code-xs">Hoje, 14:30</span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="w-5 h-5 rounded-full bg-secondary-container text-[10px] flex items-center justify-center font-bold text-on-secondary">C</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">@cafecreativo</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-0.5">
+            “Dicas essenciais para manter o foco na criação diária sem depender de cafeína excessiva...”
+          </p>
+<div class="p-space-xs rounded-lg bg-surface-container-lowest flex items-center gap-space-sm mt-1">
+<div class="w-10 h-10 rounded bg-surface-container-highest flex items-center justify-center shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">image</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-code-xs text-code-xs text-on-surface truncate">xicara_espresso.tiff</span>
+<span class="font-code-xs text-code-xs text-error font-medium">TIFF (4.2 MB) · Incompatível</span>
+</div>
+</div>
+</div>
+<!-- Section 5: Collapsible Detalhes Técnicos -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between cursor-pointer select-none">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">terminal</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Detalhes técnicos (Playwright)</span>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface font-code-xs text-code-xs inline-flex items-center gap-0.5" type="button">
+<span>Copiar JSON</span>
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+</button>
+</div>
+<div class="flex flex-col gap-1 font-code-xs text-code-xs text-on-surface-variant pt-1">
+<div class="flex justify-between py-0.5">
+<span>Endpoint:</span>
+<span class="text-on-surface font-medium">POST /v1.0/me/threads</span>
+</div>
+<div class="flex justify-between py-0.5">
+<span>Error Code:</span>
+<span class="text-error font-medium">META_ERR_UNSUPPORTED_MEDIA (100)</span>
+</div>
+<div class="flex justify-between py-0.5">
+<span>Subcode:</span>
+<span class="text-on-surface">2207012</span>
+</div>
+<div class="flex justify-between py-0.5">
+<span>Request ID:</span>
+<span class="text-primary">req_9fa82b7c01</span>
+</div>
+</div>
+<!-- Code Snippet Box -->
+<div class="mt-2 p-2.5 rounded-lg bg-surface-container-lowest font-code-xs text-code-xs overflow-x-auto text-on-surface-variant leading-relaxed">
+<span class="text-purple-300">{</span><br/>
+              <span class="text-primary">"error"</span>: <span class="text-purple-300">{</span><br/>
+                <span class="text-primary">"message"</span>: <span class="text-emerald-300">"Unsupported media type: image/tiff"</span>,<br/>
+                <span class="text-primary">"type"</span>: <span class="text-emerald-300">"Sessão do Threads"</span>,<br/>
+                <span class="text-primary">"code"</span>: <span class="text-amber-300">100</span>,<br/>
+                <span class="text-primary">"error_subcode"</span>: <span class="text-amber-300">2207012</span>,<br/>
+                <span class="text-primary">"fbtrace_id"</span>: <span class="text-emerald-300">"A9fk3_0pLx92"</span><br/>
+              <span class="text-purple-300">}</span><br/>
+<span class="text-purple-300">}</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main></div><script src="renderer.js"></script></body></html>

@@ -32,7 +32,7 @@ export async function launch(headless=true){
   return chromium.launch({headless,timeout:waitMs});
 }
 export async function openHome(page){
-  await page.goto(home,{waitUntil:'domcontentloaded',timeout:waitMs});
+  await page.goto(home,{waitUntil:'commit',timeout:waitMs});
 }
 export async function identify(page,{details=false}={}){
   const profile=page.getByRole('link',{name:/^(profile|perfil|your profile|seu perfil)\b/i})
@@ -83,6 +83,44 @@ export async function openComposer(page){
   await editor.waitFor({state:'visible',timeout:waitMs});
   return {dialog,editor};
 }
+export async function findPublishedPost(page,handle,text,sentAt){
+  if(!text)return null;
+  const prefix='/'+handle.toLowerCase()+'/post/';
+  return page.getByText(text,{exact:true}).evaluateAll((matches,{prefix,sentAt})=>{
+    const found=new Map();
+    for(const match of matches){
+      for(let node=match,depth=0;node&&depth<12;node=node.parentElement,depth++){
+        const links=[...node.querySelectorAll('a[href]')].filter(a=>{
+          const url=new URL(a.href);
+          return url.origin===location.origin&&url.pathname.toLowerCase().startsWith(prefix)&&a.querySelector('time[datetime]');
+        });
+        const unique=new Set(links.map(a=>new URL(a.href).pathname));
+        if(unique.size>1)break;
+        if(!unique.size)continue;
+        for(const link of links){
+          const stamp=Date.parse(link.querySelector('time[datetime]')?.getAttribute('datetime')||'');
+          if(stamp>=sentAt-2500&&stamp<=Date.now()+5000)found.set(new URL(link.href).pathname,{url:link.href,confirmedAt:stamp});
+        }
+        break;
+      }
+    }
+    return found.size===1?[...found.values()][0]:null;
+  },{prefix,sentAt});
+}
+async function checkOwnProfile(context,handle,text,sentAt){
+  const page=await context.newPage();
+  const profile=new URL('/'+handle,home).href;
+  try{
+    for(let attempt=0;attempt<3;attempt++){
+      await page.goto(profile,{waitUntil:'commit',timeout:waitMs});
+      await page.getByText(text,{exact:true}).first().waitFor({timeout:10000}).catch(()=>{});
+      const result=await findPublishedPost(page,handle,text,sentAt);
+      if(result)return {status:'publicado',...result};
+      if(attempt<2)await page.waitForTimeout(1250);
+    }
+    throw Error('A publicação ainda não apareceu no perfil.');
+  }finally{await page.close().catch(()=>{});}
+}
 export async function publish(browser,account,job,media,beforeSend,onStage=()=>{}){
   const ctx=await browser.newContext({storageState:account.state});
   ctx.setDefaultTimeout(waitMs);
@@ -116,9 +154,14 @@ export async function publish(browser,account,job,media,beforeSend,onStage=()=>{
     await onStage('Aguardando confirmação do Threads');
     await beforeSend();
     stage='confirmar a publicação no Threads';
+    const sentAt=Date.now();
+    const toast=page.getByText(/^(posted|thread posted|post published|your (?:thread|post) was (?:posted|published)|publicad[oa]|thread publicado|post publicado|publicação enviada|(?:seu|o) (?:thread|post) foi publicad[oa])[.!]?$/i)
+      .filter({visible:true}).first().waitFor().then(()=>({status:'publicado',confirmedAt:Date.now()}));
+    toast.catch(()=>{});
     await submit.click();
-    await page.getByText(/^(posted|thread posted|your thread was posted|publicado|thread publicado|seu thread foi publicado)[.!]?$/i).filter({visible:true}).first().waitFor();
-    return {status:'publicado',confirmedAt:Date.now()};
+    if(!job.text)return await toast;
+    const profile=dialog.waitFor({state:'hidden'}).then(()=>checkOwnProfile(ctx,account.handle,job.text,sentAt));
+    return await Promise.any([toast,profile]);
   }catch(error){
     if(error.name==='TimeoutError')throw Error('O Threads levou mais de 2 minutos para '+stage+'.');
     throw error;

@@ -91,7 +91,7 @@ function prepare(){
   while(staticText.nextNode()){
     const node=staticText.currentNode;
     if(node.parentElement?.closest('style,script'))continue;
-    node.textContent=node.textContent.replaceAll('Luiz Silva','Perfil local').replaceAll('v1.4','v0.1.5')
+    node.textContent=node.textContent.replaceAll('Luiz Silva','Perfil local').replaceAll('v1.4','v0.1.6')
       .replaceAll('Banco SQLite local seguro.','').replaceAll('Armazenado no SQLite local','Armazenado neste computador');
   }
   for(const control of main.querySelectorAll('button,input,select,textarea'))control.disabled=true;

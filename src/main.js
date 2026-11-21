@@ -9,7 +9,7 @@ import {launch,identify,openHome,publish,SessionError} from './threads.js';
 import {availablePort,startLocalRedis,stopLocalRedis} from './managed-redis.js';
 
 const routes=['welcome','overview','accounts','posts','logs','settings'];
-let window,tray,closing=false,queue,redisError='',login,workerBrowser,selected,activeJobs=0,idleTimer;
+let window,tray,closing=false,queue,redisError='',login,workerBrowser,selected,activeJobs=0,idleTimer,warmTimer,warming=false;
 let accountChanges=Promise.resolve();
 let redisBusy=false;
 let local;
@@ -57,6 +57,19 @@ async function send(...args){
       if(current)await current.then(instance=>instance.close()).catch(()=>{});
     },30000);
   }
+}
+async function warmUpcoming(){
+  if(closing||warming||workerBrowser||!queue?.ready)return;
+  warming=true;
+  try{
+    const at=await queue.nextDue();
+    if(!at||at-Date.now()>18000)return;
+    await browser();
+    if(!activeJobs)idleTimer=setTimeout(async()=>{
+      const current=workerBrowser;workerBrowser=null;
+      if(current)await current.then(instance=>instance.close()).catch(()=>{});
+    },30000);
+  }catch{}finally{warming=false;}
 }
 async function redisConnect(url,store=false){
   if(redisBusy)throw Error('Já existe uma conexão Redis em andamento.');
@@ -240,6 +253,7 @@ async function start(){
     if(!override&&local.useManaged===undefined&&local.redis==='redis://127.0.0.1:6379/')void provisionLocal().catch(managedFailure);
   });
   await show(local.welcome?'welcome':'overview');
+  warmTimer=setInterval(warmUpcoming,4000);
 }
 if(!app.requestSingleInstanceLock())app.quit();
 else{
@@ -248,7 +262,7 @@ else{
     if(closing)return;
     event.preventDefault();closing=true;
     const timeout=setTimeout(()=>app.exit(0),15000);
-    clearTimeout(idleTimer);
+    clearTimeout(idleTimer);clearInterval(warmTimer);
     Promise.allSettled([disposeLogin(),queue?.close()])
       .then(()=>Promise.allSettled([managedUrl&&stopLocalRedis(managedUrl),workerBrowser?.then(instance=>instance.close())]))
       .finally(()=>{clearTimeout(timeout);app.quit();});

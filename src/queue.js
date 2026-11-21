@@ -64,6 +64,7 @@ export async function connectQueue({url,prefix,accounts,mediaPath,browser,publis
   return {
     concurrency,
     get ready(){return connection.status==='ready';},
+    async nextDue(){const [job]=await queue.getJobs(['delayed'],0,0,true);return job?.data.at;},
     list,
     async add(posts){
       const timestamp=Date.now();
